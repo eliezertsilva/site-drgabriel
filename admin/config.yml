@@ -2,6 +2,7 @@ backend:
   name: github
   repo: eliezertsilva/site-drgabriel # Substitua se o repositório for outro
   branch: main # Verifique se este é o branch principal
+  auth_type: pkce # Força o uso do método de autenticação moderno (PKCE)
 
 media_folder: "assets/img" # Onde as imagens serão salvas
 public_folder: "/assets/img" # Como as imagens serão acessadas no site

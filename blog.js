@@ -17,11 +17,14 @@ async function loadBlogPosts() {
   if (!container) return;
 
   try {
-    const response = await fetch("posts.json");
+    const response = await fetch(POSTS_JSON_URL);
     if (!response.ok) throw new Error("Não foi possível carregar os posts.");
-    const posts = await response.json();
+    let posts = await response.json();
 
-    if (posts.length === 0) {
+    // Ordena os posts por data, do mais recente para o mais antigo
+    posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    if (!posts || posts.length === 0) {
       container.innerHTML = "<p>Nenhum post encontrado.</p>";
       return;
     }
@@ -29,7 +32,7 @@ async function loadBlogPosts() {
     container.innerHTML = posts
       .map(
         (post) => `
-            <a href="post.html?id=${post.id}" class="post-card">
+            <a href="post.html?slug=${post.slug}" class="post-card">
                 <div class="post-card-image" style="background-image: url('${post.image}')"></div>
                 <div class="post-card-body">
                     <h3>${post.title}</h3>
@@ -53,19 +56,23 @@ async function loadSinglePost() {
   if (!postContent) return;
 
   const params = new URLSearchParams(window.location.search);
-  const postId = params.get("id");
+  const postSlug = params.get("slug");
 
-  if (!postId) {
+  if (!postSlug) {
     postContent.innerHTML =
       '<p>Post não encontrado. <a href="blog.html">Voltar para o blog</a>.</p>';
     return;
   }
 
   try {
-    const response = await fetch("posts.json");
+    const response = await fetch(POSTS_JSON_URL);
     if (!response.ok) throw new Error("Não foi possível carregar o post.");
     const posts = await response.json();
-    const post = posts.find((p) => p.id == postId);
+    const post = posts.find((p) => p.slug === postSlug);
+
+    if (!post) {
+      throw new Error("Post não encontrado.");
+    }
 
     document.title = `${post.title} - Dr. Gabriel Marcondes`;
     document
@@ -75,7 +82,8 @@ async function loadSinglePost() {
     document.getElementById("post-meta").textContent = `Publicado por ${
       post.author
     } em ${formatDate(post.date)}`;
-    postContent.innerHTML = post.content;
+    // O conteúdo já vem em HTML do editor Rich Text
+    postContent.innerHTML = post.body;
   } catch (error) {
     postContent.innerHTML = `<p>Ocorreu um erro ao carregar o post. Tente novamente mais tarde.</p>`;
     console.error(error);

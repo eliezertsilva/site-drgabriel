@@ -1,39 +1,46 @@
 backend:
-  name: git-gateway
+  name: github # Alterado de git-gateway para github
   branch: main
+  repo: eliezertsilva/site-drgabriel # Repositório no formato usuario/repo
 
 media_folder: "assets/blog" # Onde as imagens dos posts serão salvas
 public_folder: "/assets/blog"
 
+# Esta coleção gera um arquivo JSON com os dados de todos os posts.
+# É uma "coleção de dados" que o nosso blog.js vai ler.
+files:
+  - label: "Posts"
+    name: "posts"
+    file: "posts.json"
+    description: "Arquivo gerado automaticamente. Não edite manualmente."
+    editor:
+      preview: false
+    fields:
+      - { label: "Posts", name: "posts", widget: "hidden" }
+
 collections:
-  - name: "blog"
-    label: "Blog"
-    files:
-      - name: "posts"
-        label: "Posts do Blog"
-        label_singular: "Post"
-        description: "Crie e edite os artigos do blog aqui."
-        format: "json"
-        file: "posts.json"
-        fields:
-          - { label: "ID", name: "id", widget: "number", value_type: "int" }
-          - { label: "Título", name: "title", widget: "string" }
-          - {
-              label: "Resumo (para a lista do blog)",
-              name: "summary",
-              widget: "text",
-            }
-          - { label: "Imagem de Capa", name: "image", widget: "image" }
-          - {
-              label: "Autor",
-              name: "author",
-              widget: "string",
-              default: "Dr. Gabriel Marcondes",
-            }
-          - {
-              label: "Data de Publicação",
-              name: "date",
-              widget: "datetime",
-              format: "YYYY-MM-DD",
-            }
-          - { label: "Conteúdo do Post", name: "content", widget: "markdown" }
+  - name: "posts" # Simplificado para refletir a coleção de posts
+    label: "Posts do Blog"
+    label_singular: "Post"
+    description: "Crie e edite os artigos do blog aqui."
+    folder: "_posts" # Os posts agora serão arquivos .md individuais
+    create: true
+    slug: "{{slug}}" # O slug será o nome do arquivo
+    summary: "{{title}} - {{day}}/{{month}}/{{year}}"
+    fields:
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Data de Publicação", name: "date", widget: "datetime" }
+      - {
+          label: "Imagem de Capa",
+          name: "image",
+          widget: "image",
+          required: false,
+        }
+      - { label: "Resumo", name: "summary", widget: "text" }
+      - {
+          label: "Autor",
+          name: "author",
+          widget: "string",
+          default: "Dr. Gabriel Marcondes",
+        }
+      - { label: "Conteúdo do Post", name: "body", widget: "rich_text" }

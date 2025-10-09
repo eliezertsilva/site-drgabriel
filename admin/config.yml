@@ -1,32 +1,19 @@
 backend:
-  name: github # Alterado de git-gateway para github
+  name: git-gateway
   branch: main
-  repo: eliezertsilva/site-drgabriel # Repositório no formato usuario/repo
 
 media_folder: "assets/blog" # Onde as imagens dos posts serão salvas
 public_folder: "/assets/blog"
 
-# Esta coleção gera um arquivo JSON com os dados de todos os posts.
-# É uma "coleção de dados" que o nosso blog.js vai ler.
-files:
-  - label: "Posts"
-    name: "posts"
-    file: "posts.json"
-    description: "Arquivo gerado automaticamente. Não edite manualmente."
-    editor:
-      preview: false
-    fields:
-      - { label: "Posts", name: "posts", widget: "hidden" }
-
 collections:
-  - name: "posts" # Simplificado para refletir a coleção de posts
-    label: "Posts do Blog"
+  - name: "blog" # Nome da coleção
+    label: "Blog" # Rótulo que aparece no CMS
+    folder: "_posts" # Pasta onde os arquivos de post são salvos
+    create: true # Permite criar novos posts
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}" # Formato do nome do arquivo
+    summary: "{{title}} - {{day}}/{{month}}/{{year}}"
     label_singular: "Post"
     description: "Crie e edite os artigos do blog aqui."
-    folder: "_posts" # Os posts agora serão arquivos .md individuais
-    create: true
-    slug: "{{slug}}" # O slug será o nome do arquivo
-    summary: "{{title}} - {{day}}/{{month}}/{{year}}"
     fields:
       - { label: "Título", name: "title", widget: "string" }
       - { label: "Data de Publicação", name: "date", widget: "datetime" }

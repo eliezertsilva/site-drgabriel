@@ -6,28 +6,34 @@ media_folder: "assets/blog" # Onde as imagens dos posts serão salvas
 public_folder: "/assets/blog"
 
 collections:
-  - name: "blog" # Nome da coleção
-    label: "Blog" # Rótulo que aparece no CMS
-    folder: "_posts" # Pasta onde os arquivos de post são salvos
-    create: true # Permite criar novos posts
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}" # Formato do nome do arquivo
-    summary: "{{title}} - {{day}}/{{month}}/{{year}}"
+  - name: "blog"
+    label: "Blog"
     label_singular: "Post"
     description: "Crie e edite os artigos do blog aqui."
-    fields:
-      - { label: "Título", name: "title", widget: "string" }
-      - { label: "Data de Publicação", name: "date", widget: "datetime" }
-      - {
-          label: "Imagem de Capa",
-          name: "image",
-          widget: "image",
-          required: false,
-        }
-      - { label: "Resumo", name: "summary", widget: "text" }
-      - {
-          label: "Autor",
-          name: "author",
-          widget: "string",
-          default: "Dr. Gabriel Marcondes",
-        }
-      - { label: "Conteúdo do Post", name: "body", widget: "rich_text" }
+    files:
+      - file: "posts.json"
+        label: "Posts do Blog"
+        name: "posts"
+        widget: "list"
+        fields:
+          - {
+              label: "Slug (URL amigável, sem espaços ou acentos)",
+              name: "slug",
+              widget: "string",
+            }
+          - { label: "Título", name: "title", widget: "string" }
+          - { label: "Data de Publicação", name: "date", widget: "datetime" }
+          - {
+              label: "Imagem de Capa",
+              name: "image",
+              widget: "image",
+              required: false,
+            }
+          - { label: "Resumo", name: "summary", widget: "text" }
+          - {
+              label: "Autor",
+              name: "author",
+              widget: "string",
+              default: "Dr. Gabriel Marcondes",
+            }
+          - { label: "Conteúdo do Post", name: "body", widget: "rich_text" }

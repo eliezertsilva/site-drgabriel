@@ -18,8 +18,12 @@ async function loadBlogPosts() {
 
   try {
     const response = await fetch(POSTS_JSON_URL);
-    if (!response.ok) throw new Error("Não foi possível carregar os posts.");
-    let posts = await response.json();
+    if (!response.ok)
+      throw new Error(
+        "Não foi possível carregar os posts. Verifique o arquivo posts.json."
+      );
+    const data = await response.json();
+    const posts = data.posts || []; // Os posts estão dentro de um array "posts"
 
     // Ordena os posts por data, do mais recente para o mais antigo
     posts.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -67,8 +71,8 @@ async function loadSinglePost() {
   try {
     const response = await fetch(POSTS_JSON_URL);
     if (!response.ok) throw new Error("Não foi possível carregar o post.");
-    const posts = await response.json();
-    const post = posts.find((p) => p.slug === postSlug);
+    const data = await response.json();
+    const post = (data.posts || []).find((p) => p.slug === postSlug);
 
     if (!post) {
       throw new Error("Post não encontrado.");

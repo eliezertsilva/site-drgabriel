@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- O título e a descrição serão preenchidos via JS -->
+    <!-- O título e a descrição serão atualizados pelo JavaScript -->
     <title>Carregando post... - Dr. Gabriel Marcondes</title>
-    <meta name="description" content="" />
+    <meta name="description" content="Carregando conteúdo do artigo." />
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 
     <!-- Fontes -->
@@ -26,30 +26,22 @@
     <custom-header></custom-header>
 
     <main class="page-content">
-      <!-- O header do post será preenchido via JS -->
-      <header id="post-header" class="page-header">
+      <header class="page-header">
         <div class="container">
           <h1 id="post-title">Carregando...</h1>
-          <p id="post-meta">Publicado por ... em ...</p>
+          <p id="post-meta"></p>
         </div>
       </header>
 
       <div class="container content-area">
-        <!-- O conteúdo do post será inserido aqui -->
         <article id="post-content">
-          <p>Carregando conteúdo do post...</p>
+          <p>Carregando conteúdo do artigo...</p>
         </article>
       </div>
     </main>
 
     <custom-footer></custom-footer>
 
-    <cookie-modal></cookie-modal>
-
-    <script src="cookie-modal.js" defer></script>
-    <script src="script.js?v=1.4" defer></script>
-    <!-- Funções globais -->
     <script src="blog.js" defer></script>
-    <!-- Funções do blog -->
   </body>
 </html>

@@ -7,20 +7,6 @@
     <link href="config.yml" type="text/yaml" rel="cms-config-url" />
   </head>
   <body>
-    <script>
-      if (window.location.hash.includes("access_token")) {
-        const { access_token, token_type } = Object.fromEntries(
-          new URLSearchParams(window.location.hash.substring(1))
-        );
-        fetch(
-          `/.netlify/functions/callback?access_token=${access_token}&token_type=${token_type}`
-        )
-          .then((res) => res.json())
-          .then((data) => {
-            window.location.assign(`/?token=${data.token}&provider=github`);
-          });
-      }
-    </script>
     <!-- Script do CMS -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   </body>

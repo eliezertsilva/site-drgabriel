@@ -6,31 +6,34 @@ media_folder: "assets/blog" # Onde as imagens dos posts serão salvas
 public_folder: "/assets/blog"
 
 collections:
-  - name: "posts"
-    label: "Posts do Blog"
-    label_singular: "Post"
-    description: "Crie e edite os artigos do blog aqui."
-    format: "json"
-    file: "posts.json"
-    fields:
-      - { label: "ID", name: "id", widget: "number", value_type: "int" }
-      - { label: "Título", name: "title", widget: "string" }
-      - {
-          label: "Resumo (para a lista do blog)",
-          name: "summary",
-          widget: "text",
-        }
-      - { label: "Imagem de Capa", name: "image", widget: "image" }
-      - {
-          label: "Autor",
-          name: "author",
-          widget: "string",
-          default: "Dr. Gabriel Marcondes",
-        }
-      - {
-          label: "Data de Publicação",
-          name: "date",
-          widget: "datetime",
-          format: "YYYY-MM-DD",
-        }
-      - { label: "Conteúdo do Post", name: "content", widget: "markdown" }
+  - name: "blog"
+    label: "Blog"
+    files:
+      - name: "posts"
+        label: "Posts do Blog"
+        label_singular: "Post"
+        description: "Crie e edite os artigos do blog aqui."
+        format: "json"
+        file: "posts.json"
+        fields:
+          - { label: "ID", name: "id", widget: "number", value_type: "int" }
+          - { label: "Título", name: "title", widget: "string" }
+          - {
+              label: "Resumo (para a lista do blog)",
+              name: "summary",
+              widget: "text",
+            }
+          - { label: "Imagem de Capa", name: "image", widget: "image" }
+          - {
+              label: "Autor",
+              name: "author",
+              widget: "string",
+              default: "Dr. Gabriel Marcondes",
+            }
+          - {
+              label: "Data de Publicação",
+              name: "date",
+              widget: "datetime",
+              format: "YYYY-MM-DD",
+            }
+          - { label: "Conteúdo do Post", name: "content", widget: "markdown" }

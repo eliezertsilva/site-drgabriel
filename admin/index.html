@@ -4,12 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gerenciador de Conteúdo</title>
-    <!-- Script do Netlify Identity Widget -->
-    <script src="https://unpkg.com/netlify-identity-widget@^1.9.2"></script>
-    <!-- Script do Decap CMS -->
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   </head>
   <body>
+    <!-- Script do Netlify Identity Widget -->
+    <script src="https://unpkg.com/netlify-identity-widget@^1.9.2"></script>
+    <!-- Script do Decap CMS (que inicializa a UI) -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
     <script>
       if (window.netlifyIdentity) {
         window.netlifyIdentity.on("init", (user) => {

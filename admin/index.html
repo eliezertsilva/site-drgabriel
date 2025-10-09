@@ -3,23 +3,20 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gerenciador de Conteúdo</title>
+    <title>Administração do Conteúdo</title>
+    <!-- Script de Autenticação do Netlify Identity -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
-    <!-- Script do Netlify Identity Widget -->
-    <script src="https://unpkg.com/netlify-identity-widget@^1.9.2"></script>
-    <!-- Script do Decap CMS (que inicializa a UI) -->
+    <!-- Script do CMS -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <!-- Script de configuração -->
     <script>
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", (user) => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
-        });
-      }
+      CMS.init({
+        config: {
+          /* sua configuração pode ir aqui ou no config.yml */
+        },
+      });
     </script>
   </body>
 </html>

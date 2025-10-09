@@ -4,19 +4,23 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Administração do Conteúdo</title>
-    <!-- Script de Autenticação do Netlify Identity -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
+    <script>
+      if (window.location.hash.includes("access_token")) {
+        const { access_token, token_type } = Object.fromEntries(
+          new URLSearchParams(window.location.hash.substring(1))
+        );
+        fetch(
+          `/.netlify/functions/callback?access_token=${access_token}&token_type=${token_type}`
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            window.location.assign(`/?token=${data.token}&provider=github`);
+          });
+      }
+    </script>
     <!-- Script do CMS -->
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-    <!-- Script de configuração -->
-    <script>
-      CMS.init({
-        config: {
-          /* sua configuração pode ir aqui ou no config.yml */
-        },
-      });
-    </script>
   </body>
 </html>

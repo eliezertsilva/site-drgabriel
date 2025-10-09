@@ -1,33 +1,36 @@
 backend:
-  name: git-gateway
-  branch: main
+  name: github
+  repo: eliezertsilva/site-drgabriel # Ex: DrGabrielMarcondes/site
+  branch: main # ou master, dependendo do seu repositório
 
-media_folder: "assets/blog" # Onde as imagens dos posts serão salvas
-public_folder: "/assets/blog"
+media_folder: "assets/img" # Onde as imagens serão salvas
+public_folder: "/assets/img" # Como as imagens serão acessadas no site
 
 collections:
-  - name: "blog" # Identificador da coleção
-    label: "Blog"
-    label_singular: "Post"
-    folder: "_posts" # O CMS agora criará arquivos .json dentro desta pasta
-    create: true # Habilita o botão "Novo Post"
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}" # Define o nome do arquivo, ex: 2024-05-30-meu-post.json
-    extension: "json"
-    description: "Crie e edite os artigos do blog aqui."
-    fields: # Os campos para preencher em cada post
+  - name: "posts"
+    label: "Posts do Blog"
+    folder: "_posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
       - { label: "Título", name: "title", widget: "string" }
       - { label: "Data de Publicação", name: "date", widget: "datetime" }
-      - {
-          label: "Imagem de Capa",
-          name: "image",
-          widget: "image",
-          required: false,
-        }
-      - { label: "Resumo", name: "summary", widget: "text" }
+      - { label: "Imagem de Destaque", name: "image", widget: "image" }
       - {
           label: "Autor",
           name: "author",
           widget: "string",
           default: "Dr. Gabriel Marcondes",
         }
-      - { label: "Conteúdo do Post", name: "body", widget: "rich_text" }
+      - { label: "Resumo", name: "summary", widget: "markdown" }
+      - { label: "Corpo do Post", name: "body", widget: "markdown" }
+  - name: "pages"
+    label: "Páginas"
+    files:
+      - file: "endometriose.html"
+        label: "Página Endometriose"
+        name: "endometriose"
+        fields:
+          - { label: "Título", name: "title", widget: "string" }
+          - { label: "Conteúdo", name: "body", widget: "markdown" }
+      # Você pode adicionar outras páginas aqui, como planejamento-familiar.html

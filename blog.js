@@ -1,4 +1,5 @@
-const POSTS_JSON_URL = "posts.json";
+const POSTS_INDEX_URL = "posts-index.json";
+const POSTS_DIR = "_posts/";
 
 /**
  * Formata uma data no formato 'YYYY-MM-DD' para 'DD de Mês de YYYY'.
@@ -12,20 +13,44 @@ function formatDate(dateString) {
 }
 
 /**
+ * Extrai o slug do nome do arquivo.
+ * Ex: "2024-05-25-meu-post.json" -> "meu-post"
+ * @param {string} filename - O nome do arquivo do post.
+ * @returns {string} O slug do post.
+ */
+function getSlugFromFilename(filename) {
+  // Remove a data (YYYY-MM-DD-) e a extensão (.json)
+  return filename.replace(/^\d{4}-\d{2}-\d{2}-/, "").replace(/\.json$/, "");
+}
+
+/**
  * Carrega e exibe a lista de posts na página do blog.
  */
 async function loadBlogPosts() {
   const container = document.getElementById("blog-posts-container");
   if (!container) return;
 
+  container.innerHTML = "<p>Carregando posts...</p>";
+
   try {
-    const response = await fetch(POSTS_JSON_URL);
-    if (!response.ok)
+    // 1. Busca o índice de arquivos de posts
+    const indexResponse = await fetch(POSTS_INDEX_URL);
+    if (!indexResponse.ok)
       throw new Error(
-        "Não foi possível carregar os posts. Verifique o arquivo posts.json."
+        "Não foi possível carregar o índice de posts. Verifique o arquivo posts-index.json."
       );
-    const data = await response.json();
-    const posts = data.posts || []; // Os posts estão dentro de um array "posts"
+    const indexData = await indexResponse.json();
+    const postFiles = indexData.post_files || [];
+
+    // 2. Busca o conteúdo de cada arquivo de post
+    const postPromises = postFiles.map(async (file) => {
+      const postRes = await fetch(`${POSTS_DIR}${file}`);
+      const postData = await postRes.json();
+      postData.slug = getSlugFromFilename(file); // Adiciona o slug dinamicamente
+      return postData;
+    });
+
+    const posts = await Promise.all(postPromises);
 
     // Ordena os posts por data, do mais recente para o mais antigo
     posts.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -71,14 +96,20 @@ async function loadSinglePost() {
   }
 
   try {
-    const response = await fetch(POSTS_JSON_URL);
-    if (!response.ok) throw new Error("Não foi possível carregar o post.");
-    const data = await response.json();
-    const post = (data.posts || []).find((p) => p.slug === postSlug);
+    // Para carregar um post, precisamos saber o nome completo do arquivo.
+    // Como não temos essa informação aqui, vamos buscar o índice novamente.
+    const indexResponse = await fetch(POSTS_INDEX_URL);
+    const indexData = await indexResponse.json();
+    const postFilename = (indexData.post_files || []).find(
+      (file) => getSlugFromFilename(file) === postSlug
+    );
 
-    if (!post) {
+    if (!postFilename) {
       throw new Error("Post não encontrado.");
     }
+
+    const postResponse = await fetch(`${POSTS_DIR}${postFilename}`);
+    const post = await postResponse.json();
 
     document.title = `${post.title} - Dr. Gabriel Marcondes`;
     document

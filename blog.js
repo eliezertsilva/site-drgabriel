@@ -1,10 +1,12 @@
+const POSTS_JSON_URL = "posts.json";
+
 /**
  * Formata uma data no formato 'YYYY-MM-DD' para 'DD de Mês de YYYY'.
  * @param {string} dateString - A data em formato de string.
  * @returns {string} A data formatada.
  */
 function formatDate(dateString) {
-  const date = new Date(dateString + "T00:00:00"); // Adiciona T00:00:00 para evitar problemas de fuso
+  const date = new Date(dateString);
   const options = { year: "numeric", month: "long", day: "numeric" };
   return date.toLocaleDateString("pt-BR", options);
 }

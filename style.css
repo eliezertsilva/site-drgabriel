@@ -1,0 +1,514 @@
+/* Reset e fundamentos */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  min-height: 100vh;
+  color: #1f1b24;
+  background: var(--bg);
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial,
+    sans-serif;
+  font-weight: 400; /* Peso padrão para o texto */
+  line-height: 1.6;
+  overflow-x: hidden; /* Prevenir rolagem horizontal */
+}
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 600; /* Peso para títulos */
+  color: #2a2438;
+  line-height: 1.3;
+}
+p {
+  color: #413a4f;
+}
+
+/* Tokens de cor */
+:root {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --muted: #8b927f;
+  --primary: #556b2f;
+  --primary-50: #eef2e7;
+  --primary-100: #e1e8d7;
+  --accent: #d4af37;
+  --text: #26301e;
+  --text-soft: #4c5840;
+  --border: #e6eadf;
+  --shadow: 0 10px 30px rgba(38, 48, 30, 0.08);
+}
+
+/* Layout utilidades */
+main {
+  padding-top: 0;
+}
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 40px;
+  align-items: center;
+}
+.section {
+  padding: 80px 0;
+}
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 16px;
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  color: #fff;
+  padding: 120px 0;
+  background-image: linear-gradient(
+      rgba(38, 48, 30, 0.6),
+      rgba(38, 48, 30, 0.6)
+    ),
+    url("./assets/dr-gabriel.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-align: right;
+  height: 820px;
+}
+
+.hero-content {
+  max-width: 760px;
+  margin: 0 0 0 auto;
+}
+
+.hero h1 {
+  font-size: 2.8rem;
+  font-weight: 700; /* Destaque extra para o h1 principal */
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.subtitle {
+  color: #f0f0f0;
+  margin-bottom: 24px;
+  font-size: 1.1rem;
+}
+
+.cta-group-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-end;
+  margin-top: 24px;
+}
+
+.cta-group-hero .btn {
+  width: 100%;
+  max-width: 320px; /* Limita a largura dos botões */
+}
+
+.cta-group-atendimento {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 120ms ease, box-shadow 200ms ease;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: linear-gradient(transparent, transparent) padding-box,
+    linear-gradient(90deg, var(--primary), #6b8f3a) border-box;
+  color: #fff;
+}
+
+.cta-group-hero .btn-outline {
+  border-color: #fff;
+  color: #fff;
+}
+
+.cta-group-atendimento .btn-outline {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-primary:hover,
+.btn-outline:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+/* Sobre */
+.focus-list {
+  list-style: none;
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.focus-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-soft);
+}
+.focus-list li::before {
+  content: "\2713"; /* checkmark */
+  color: var(--primary);
+  font-weight: bold;
+}
+.about-media {
+  display: grid;
+  gap: 8px;
+  justify-items: end;
+}
+.photo {
+  width: 100%;
+  aspect-ratio: 4/3;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fff, var(--primary-50));
+  box-shadow: var(--shadow);
+}
+.photo.doctor {
+  background: linear-gradient(135deg, #fff, var(--primary-50)),
+    url("assets/dr_gabriel_bco(1).png") center/cover no-repeat;
+}
+.caption {
+  color: var(--muted);
+}
+
+/* Especialidades */
+.specialties .cards {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+}
+.card-media {
+  height: 160px;
+  background: #f5f1f9;
+}
+.img-endometriose {
+  background: linear-gradient(135deg, #eef4e6, #e9f1e0);
+}
+.img-menopausa {
+  background: linear-gradient(135deg, #f9f4e4, #f3ecd5);
+}
+.img-cirurgia {
+  background: linear-gradient(135deg, #e8f2e8, #e1ede1);
+}
+.img-exames {
+  background: linear-gradient(135deg, #eef6f1, #e6efe9);
+}
+.img-planejamento {
+  background: linear-gradient(135deg, #fff7e8, #f9eed6);
+}
+
+.card-body {
+  padding: 16px;
+  display: grid;
+  gap: 8px;
+  flex-grow: 1;
+}
+.card-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex; /* Garante que o link ocupe todo o espaço do card */
+}
+.card h3 {
+  font-size: 1.15rem;
+}
+.card p {
+  color: var(--text-soft);
+}
+
+/* Atendimento */
+.care .contact-list {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+.care-media .clinic {
+  background: linear-gradient(135deg, #fff, #f1f0f6);
+}
+
+/* Páginas de Conteúdo (Blog, FAQ, etc) */
+.page-header {
+  padding: 64px 0;
+  background: var(--primary-50);
+  text-align: center;
+}
+.page-header h1 {
+  font-size: 2.4rem;
+}
+.page-header p {
+  color: var(--text-soft);
+  max-width: 600px;
+  margin: 8px auto 0;
+}
+
+.content-area {
+  padding: 64px 24px;
+  max-width: 800px;
+}
+.content-area h2 {
+  margin-top: 32px;
+  margin-bottom: 8px;
+}
+.content-area h3 {
+  margin-top: 24px;
+  margin-bottom: 4px;
+}
+
+/* FAQ Accordion */
+.faq-list {
+  border-top: 1px solid var(--border);
+}
+.faq-item {
+  border-top: 1px solid var(--border);
+}
+.faq-item:first-child {
+  border-top: none;
+}
+
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 24px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2a2438;
+  font-family: inherit;
+}
+.faq-icon {
+  width: 16px;
+  height: 16px;
+  stroke: var(--primary);
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+.faq-question[aria-expanded="true"] .faq-icon {
+  transform: rotate(45deg);
+}
+.faq-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease-out;
+}
+.faq-answer.is-open {
+  grid-template-rows: 1fr;
+}
+
+/* Blog Page */
+.blog-posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  padding: 64px 0;
+}
+.post-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.post-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(38, 48, 30, 0.12);
+}
+.post-card-image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+}
+.post-card-body {
+  padding: 20px;
+}
+.post-card-body h3 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+/* Modal de Cookies */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-backdrop.show {
+  display: flex;
+}
+.modal {
+  background: #fff;
+  color: var(--text);
+  width: min(560px, calc(100% - 48px));
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.modal header {
+  background: var(--primary-50);
+  color: var(--text);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal header h3 {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+.modal .modal-body {
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+}
+.modal .modal-actions {
+  padding: 12px 16px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  background: #fafafa;
+  border-top: 1px solid var(--border);
+}
+.btn-neutral {
+  background: #fff;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.btn-accept {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* --- Media Queries --- */
+
+/* Tablet e telas menores (abaixo de 1080px) */
+@media (max-width: 1080px) {
+  main {
+    padding-top: 0;
+  }
+  .grid-2 {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .specialties .cards {
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas */
+  }
+  .hero {
+    padding: 20px 0;
+    height: 580px;
+    background-position: top right;
+  }
+  .hero-content {
+    position: relative;
+    height: 100%;
+    padding-bottom: 80px; /* Espaço para os botões */
+  }
+  .cta-group-hero {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+  .cta-group-atendimento {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .hero .btn {
+    padding: 10px;
+    width: 100%;
+  }
+  .hero h1 {
+    font-size: 1.5rem;
+  }
+  .about-media {
+    justify-items: center;
+    order: -1; /* Mover imagem para cima no mobile */
+  }
+}
+
+/* Celular (abaixo de 768px) */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 20px;
+  }
+  .section {
+    padding: 64px 0;
+  }
+  .hero {
+    padding: 20px 0;
+    height: 580px;
+    background-position: top right;
+  }
+  .hero h1 {
+    font-size: 1.5rem;
+  }
+  .subtitle {
+    font-size: 0.9rem;
+  }
+  .hero .btn {
+    padding: 12px 16px;
+  }
+  .focus-list {
+    grid-template-columns: 1fr;
+  }
+  .specialties .cards {
+    grid-template-columns: 1fr; /* 1 coluna */
+  }
+  .card-media {
+    height: 140px;
+  }
+}

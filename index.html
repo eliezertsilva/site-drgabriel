@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dr. Gabriel Marcondes - Ginecologista e Obstetra</title>
+    <meta
+      name="description"
+      content="Cuidado ginecológico e obstétrico completo e humanizado. Especialista em endometriose, cirurgia minimamente invasiva e menopausa."
+    />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css?v=1.2" />
+
+    <!-- Web Components -->
+    <script src="components.js?v=1.8" defer></script>
+  </head>
+  <body>
+    <custom-header></custom-header>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero">
+        <div class="container">
+          <div class="hero-content">
+            <h1>Cuidado completo e humanizado para a mulher</h1>
+            <p class="subtitle">
+              Ginecologia e Obstetrícia com foco no seu bem-estar, desde a
+              adolescência até a maturidade.
+            </p>
+            <div class="cta-group-hero">
+              <a href="#dr-gabriel" class="btn btn-primary"
+                >Conheça o Dr. Gabriel</a
+              >
+              <a
+                href="https://wa.me/5567998268281"
+                target="_blank"
+                rel="noopener"
+                class="btn btn-outline"
+                >Agende sua consulta</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sobre -->
+      <section id="dr-gabriel" class="section">
+        <div class="container grid-2">
+          <div class="about-text">
+            <h2 class="section-title">Dr. Gabriel Marcondes</h2>
+            <p>
+              Com uma abordagem que une ciência e acolhimento, meu objetivo é
+              oferecer um atendimento ginecológico e obstétrico que respeita a
+              individualidade de cada mulher. Acredito em uma medicina baseada
+              em confiança, diálogo e nas melhores evidências científicas.
+            </p>
+            <ul class="focus-list">
+              <li>Endometriose e Dor Pélvica</li>
+              <li>Cirurgia Ginecológica Minimamente Invasiva</li>
+              <li>Menopausa e Reposição Hormonal</li>
+              <li>Acompanhamento Pré-natal</li>
+            </ul>
+          </div>
+          <div class="about-media">
+            <div class="photo doctor"></div>
+            <p class="caption">CRM/MS 7608 • RQE 5624</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Especialidades -->
+      <section id="especialidades" class="section specialties">
+        <div class="container">
+          <h2 class="section-title">Especialidades</h2>
+          <div class="cards">
+            <a href="endometriose.html" class="card-link">
+              <div class="card">
+                <div class="card-media img-endometriose"></div>
+                <div class="card-body">
+                  <h3>Endometriose</h3>
+                  <p>
+                    Diagnóstico e tratamento completos, com abordagens clínicas
+                    e cirúrgicas para alívio da dor e melhoria da qualidade de
+                    vida.
+                  </p>
+                </div>
+              </div>
+            </a>
+            <a href="menopausa.html" class="card-link">
+              <div class="card">
+                <div class="card-media img-menopausa"></div>
+                <div class="card-body">
+                  <h3>Menopausa</h3>
+                  <p>
+                    Acompanhamento e terapia de reposição hormonal para uma
+                    transição com mais saúde e bem-estar.
+                  </p>
+                </div>
+              </div>
+            </a>
+            <a href="cirurgia-ginecologica.html" class="card-link">
+              <div class="card">
+                <div class="card-media img-cirurgia"></div>
+                <div class="card-body">
+                  <h3>Cirurgia Ginecológica</h3>
+                  <p>
+                    Procedimentos minimamente invasivos (laparoscopia e
+                    histeroscopia) para uma recuperação mais rápida.
+                  </p>
+                </div>
+              </div>
+            </a>
+            <a href="exames-preventivos.html" class="card-link">
+              <div class="card">
+                <div class="card-media img-exames"></div>
+                <div class="card-body">
+                  <h3>Exames Preventivos</h3>
+                  <p>
+                    Realização de Papanicolau, ultrassonografia pélvica e outros
+                    exames essenciais para a saúde da mulher.
+                  </p>
+                </div>
+              </div>
+            </a>
+            <a href="planejamento-familiar.html" class="card-link">
+              <div class="card">
+                <div class="card-media img-planejamento"></div>
+                <div class="card-body">
+                  <h3>Planejamento Familiar</h3>
+                  <p>
+                    Orientação sobre métodos contraceptivos, incluindo DIU
+                    hormonal e não hormonal, e laqueadura.
+                  </p>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <custom-footer></custom-footer>
+
+    <cookie-modal></cookie-modal>
+
+    <script src="cookie-modal.js" defer></script>
+    <script src="script.js?v=1.4" defer></script>
+  </body>
+</html>

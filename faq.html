@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAQ - Dr. Gabriel Marcondes</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css?v=1.1" />
+
+    <!-- Web Components -->
+    <script src="components.js?v=1.8" defer></script>
+  </head>
+  <body>
+    <custom-header></custom-header>
+
+    <main class="page-content">
+      <header class="page-header">
+        <div class="container">
+          <h1>Perguntas Frequentes (FAQ)</h1>
+          <p>Respostas para as dúvidas mais comuns sobre nossos serviços.</p>
+        </div>
+      </header>
+
+      <div class="container content-area">
+        <section class="faq-list">
+          <div class="faq-item">
+            <button
+              class="faq-question"
+              aria-expanded="false"
+              aria-controls="faq-answer-1"
+            >
+              <span>Qual o endereço da clínica?</span>
+              <svg class="faq-icon" viewBox="0 0 16 16">
+                <path d="M8 4V12" stroke-width="2" stroke-linecap="round" />
+                <path d="M4 8H12" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </button>
+            <div id="faq-answer-1" class="faq-answer" role="region">
+              <p>
+                A clínica está localizada na Av. João Pedro Fernandes, 2770 -
+                Centro, Maracaju - MS, 79150-000.
+              </p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button
+              class="faq-question"
+              aria-expanded="false"
+              aria-controls="faq-answer-2"
+            >
+              <span>Como posso agendar uma consulta?</span>
+              <svg class="faq-icon" viewBox="0 0 16 16">
+                <path d="M8 4V12" stroke-width="2" stroke-linecap="round" />
+                <path d="M4 8H12" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </button>
+            <div id="faq-answer-2" class="faq-answer" role="region">
+              <p>
+                Você pode agendar sua consulta facilmente pelo WhatsApp,
+                clicando no botão de agendamento no site, ou enviando um e-mail
+                para dr.gabrielmarcondes@gmail.com.
+              </p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button
+              class="faq-question"
+              aria-expanded="false"
+              aria-controls="faq-answer-3"
+            >
+              <span>O Dr. Gabriel atende por quais convênios?</span>
+              <svg class="faq-icon" viewBox="0 0 16 16">
+                <path d="M8 4V12" stroke-width="2" stroke-linecap="round" />
+                <path d="M4 8H12" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </button>
+            <div id="faq-answer-3" class="faq-answer" role="region">
+              <p>
+                O atendimento é realizado de forma particular. No entanto,
+                fornecemos a documentação necessária para que você possa
+                solicitar o reembolso junto ao seu convênio, caso seu plano
+                ofereça essa opção.
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <custom-footer></custom-footer>
+
+    <cookie-modal></cookie-modal>
+
+    <script src="cookie-modal.js" defer></script>
+    <script src="script.js?v=1.3" defer></script>
+  </body>
+</html>

@@ -200,12 +200,6 @@ main {
 }
 
 /* Especialidades */
-.specialties .cards {
-  margin-top: 18px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-}
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -214,6 +208,13 @@ main {
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
+  height: 100%; /* Garante que todos os cards tenham a mesma altura */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(38, 48, 30, 0.12);
 }
 .card-media {
   height: 160px;
@@ -234,6 +235,15 @@ main {
 .img-planejamento {
   background: linear-gradient(135deg, #fff7e8, #f9eed6);
 }
+.img-implantes {
+  background: linear-gradient(135deg, #f2eef5, #eae6f0);
+}
+.img-implantes {
+  background: linear-gradient(135deg, #f2eef5, #eae6f0);
+}
+.img-cirurgia-intima {
+  background: linear-gradient(135deg, #f5eef2, #f0e6ea);
+}
 
 .card-body {
   padding: 16px;
@@ -251,6 +261,70 @@ main {
 }
 .card p {
   color: var(--text-soft);
+}
+
+/* Estilos para o Carrossel (Swiper) */
+.carousel-container {
+  position: relative;
+  margin-top: 32px;
+  padding: 0 40px; /* Espaço lateral para os botões */
+  --swiper-navigation-color: var(--primary);
+  --swiper-pagination-color: var(--primary);
+  --swiper-navigation-size: 22px; /* Ajusta o tamanho do ícone da seta */
+}
+
+.specialties-carousel {
+  /* O padding-bottom não é mais necessário aqui */
+}
+
+.swiper-slide {
+  height: auto; /* Permite que o card defina a altura */
+  display: flex;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--primary);
+  width: 44px;
+  height: 44px;
+  box-shadow: var(--shadow);
+  /* Posiciona os botões verticalmente no centro da área dos slides */
+  top: 45%;
+  transform: translateY(-50%);
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  transform: translateY(-50%) scale(1.1);
+}
+
+.swiper-button-prev {
+  /* Posiciona fora da área do carrossel */
+  left: -20px;
+}
+.swiper-button-next {
+  /* Posiciona fora da área do carrossel */
+  right: -20px;
+}
+
+.carousel-container .swiper-pagination-bullet {
+  background-color: var(--primary);
+  opacity: 0.5;
+}
+
+.carousel-container .swiper-pagination-bullet-active {
+  background-color: var(--primary);
+  opacity: 1;
+}
+
+.carousel-container .swiper-pagination {
+  position: relative; /* Garante que não seja absoluto */
+  bottom: auto; /* Reseta a posição padrão */
+  margin-top: 24px; /* Adiciona espaço entre os cards e a paginação */
 }
 
 /* Atendimento */
@@ -289,6 +363,44 @@ main {
 .content-area h3 {
   margin-top: 24px;
   margin-bottom: 4px;
+}
+
+.content-area ul {
+  list-style-position: inside;
+  margin-left: 8px;
+  margin-bottom: 16px;
+}
+
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%; /* Proporção 16:9 */
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  background: #000;
+  margin-bottom: 32px;
+  border-radius: 12px;
+}
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.content-image {
+  width: 100%;
+  border-radius: 12px;
+  margin: 24px 0;
+}
+
+.content-cta {
+  background-color: var(--primary-50);
+  padding: 24px;
+  border-radius: 12px;
+  margin-top: 48px;
+  text-align: center;
 }
 
 /* FAQ Accordion */
@@ -441,9 +553,6 @@ main {
     grid-template-columns: 1fr;
     gap: 32px;
   }
-  .specialties .cards {
-    grid-template-columns: repeat(2, 1fr); /* 2 colunas */
-  }
   .hero {
     padding: 20px 0;
     height: 580px;
@@ -451,25 +560,25 @@ main {
   }
   .hero-content {
     position: relative;
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    padding-bottom: 80px; /* Espaço para os botões */
   }
   .cta-group-hero {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
+    /* Remove posicionamento absoluto e usa margens para empurrar para baixo */
+    margin-top: auto;
+    margin-bottom: 20px;
     flex-direction: row;
     align-items: center;
+    justify-content: center; /* Centraliza os botões para evitar corte */
     gap: 12px;
+    width: 100%;
+    left: 0; /* Garante que ocupe a largura toda */
+    position: relative;
   }
   .cta-group-atendimento {
     flex-direction: column;
     align-items: stretch;
-  }
-  .hero .btn {
-    padding: 10px;
-    width: 100%;
   }
   .hero h1 {
     font-size: 1.5rem;
@@ -500,13 +609,12 @@ main {
     font-size: 0.9rem;
   }
   .hero .btn {
-    padding: 12px 16px;
+    /* Reduz o padding e o tamanho da fonte para caber em telas menores */
+    padding: 10px 12px;
+    font-size: 0.8rem;
   }
   .focus-list {
     grid-template-columns: 1fr;
-  }
-  .specialties .cards {
-    grid-template-columns: 1fr; /* 1 coluna */
   }
   .card-media {
     height: 140px;

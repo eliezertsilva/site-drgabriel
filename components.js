@@ -195,9 +195,15 @@ class CustomHeader extends HTMLElement {
               <li class="has-submenu">
                 <a href="${basePath}index.html#especialidades">Especialidades <svg class="submenu-toggle-icon" viewBox="0 0 16 16"><path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
                 <ul class="submenu">
+                  <li><a href="${basePath}pre-natal.html">Pré-Natal</a></li>
+                  <li><a href="${basePath}parto-humanizado.html">Parto Humanizado</a></li>
                   <li><a href="${basePath}endometriose.html">Endometriose</a></li>
                   <li><a href="${basePath}cirurgia-ginecologica.html">Cirurgia Ginecológica</a></li>
+                  <li><a href="${basePath}cirurgia-intima.html">Cirurgia Íntima</a></li>
                   <li><a href="${basePath}menopausa.html">Menopausa</a></li>
+                  <li><a href="${basePath}implantes-hormonais.html">Implantes Hormonais</a></li>
+                  <li><a href="${basePath}planejamento-familiar.html">Planejamento Familiar</a></li>
+                  <li><a href="${basePath}exames-preventivos.html">Exames Preventivos</a></li>
                 </ul>
               </li>
               <li><a href="${basePath}blog.html">Blog</a></li>
@@ -235,9 +241,15 @@ class CustomHeader extends HTMLElement {
                   <li class="has-submenu">
                     <a href="#" class="submenu-toggle" role="button" aria-haspopup="true" aria-expanded="false">Especialidades <svg class="submenu-toggle-icon" viewBox="0 0 16 16"><path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
                     <ul class="submenu">
+                      <li><a href="${basePath}pre-natal.html">Pré-Natal</a></li>
+                      <li><a href="${basePath}parto-humanizado.html">Parto Humanizado</a></li>
                       <li><a href="${basePath}endometriose.html">Endometriose</a></li>
                       <li><a href="${basePath}cirurgia-ginecologica.html">Cirurgia Ginecológica</a></li>
+                      <li><a href="${basePath}cirurgia-intima.html">Cirurgia Íntima</a></li>
                       <li><a href="${basePath}menopausa.html">Menopausa</a></li>
+                      <li><a href="${basePath}implantes-hormonais.html">Implantes Hormonais</a></li>
+                      <li><a href="${basePath}planejamento-familiar.html">Planejamento Familiar</a></li>
+                      <li><a href="${basePath}exames-preventivos.html">Exames Preventivos</a></li>
                     </ul>
                   </li>
                   <li><a href="${basePath}blog.html">Blog</a></li>

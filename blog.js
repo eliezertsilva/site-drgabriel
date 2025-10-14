@@ -1,5 +1,6 @@
-const POSTS_INDEX_URL = "posts-index.json";
-const POSTS_DIR = "_posts/";
+// URL da sua API REST do WordPress local.
+// A URL deve corresponder à pasta da sua instalação do WordPress no XAMPP.
+const WP_API_BASE_URL = "http://localhost/drgabriel/wp-json/wp/v2";
 
 /**
  * Formata uma data no formato 'YYYY-MM-DD' para 'DD de Mês de YYYY'.
@@ -8,19 +9,14 @@ const POSTS_DIR = "_posts/";
  */
 function formatDate(dateString) {
   const date = new Date(dateString);
-  const options = { year: "numeric", month: "long", day: "numeric" };
+  // Adiciona o fuso horário para evitar problemas de data "um dia antes"
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  };
   return date.toLocaleDateString("pt-BR", options);
-}
-
-/**
- * Extrai o slug do nome do arquivo.
- * Ex: "2024-05-25-meu-post.json" -> "meu-post"
- * @param {string} filename - O nome do arquivo do post.
- * @returns {string} O slug do post.
- */
-function getSlugFromFilename(filename) {
-  // Remove a data (YYYY-MM-DD-) e a extensão (.json)
-  return filename.replace(/^\d{4}-\d{2}-\d{2}-/, "").replace(/\.json$/, "");
 }
 
 /**
@@ -33,27 +29,12 @@ async function loadBlogPosts() {
   container.innerHTML = "<p>Carregando posts...</p>";
 
   try {
-    // 1. Busca o índice de arquivos de posts
-    const indexResponse = await fetch(POSTS_INDEX_URL);
-    if (!indexResponse.ok)
-      throw new Error(
-        "Não foi possível carregar o índice de posts. Verifique o arquivo posts-index.json."
-      );
-    const indexData = await indexResponse.json();
-    const postFiles = indexData.post_files || [];
-
-    // 2. Busca o conteúdo de cada arquivo de post
-    const postPromises = postFiles.map(async (file) => {
-      const postRes = await fetch(`${POSTS_DIR}${file}`);
-      const postData = await postRes.json();
-      postData.slug = getSlugFromFilename(file); // Adiciona o slug dinamicamente
-      return postData;
-    });
-
-    const posts = await Promise.all(postPromises);
-
-    // Ordena os posts por data, do mais recente para o mais antigo
-    posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+    // Busca os posts da API do WordPress. `_embed` inclui dados relacionados como imagem destacada e autor.
+    const response = await fetch(`${WP_API_BASE_URL}/posts?_embed`);
+    if (!response.ok) {
+      throw new Error("Não foi possível carregar os posts do WordPress.");
+    }
+    const posts = await response.json();
 
     if (!posts || posts.length === 0) {
       container.innerHTML = "<p>Nenhum post encontrado.</p>";
@@ -61,17 +42,23 @@ async function loadBlogPosts() {
     }
 
     container.innerHTML = posts
-      .map(
-        (post) => `
-            <a href="post.html?slug=${post.slug}" class="post-card">
-                <div class="post-card-image" style="background-image: url('${post.image}')"></div>
-                <div class="post-card-body">
-                    <h3>${post.title}</h3>
-                    <p>${post.summary}</p>
-                </div>
-            </a>
-        `
-      )
+      .map((post) => {
+        // Pega a imagem destacada do objeto `_embedded`
+        const imageUrl =
+          post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
+          "assets/img/placeholder.jpg";
+        const summary = post.excerpt.rendered;
+
+        return `
+              <a href="post.html?slug=${post.slug}" class="post-card">
+                  <div class="post-card-image" style="background-image: url('${imageUrl}')"></div>
+                  <div class="post-card-body">
+                      <h3>${post.title.rendered}</h3>
+                      <div>${summary}</div>
+                  </div>
+              </a>
+          `;
+      })
       .join("");
   } catch (error) {
     container.innerHTML = `<p>Ocorreu um erro ao carregar o blog. Tente novamente mais tarde.</p>`;
@@ -96,38 +83,57 @@ async function loadSinglePost() {
   }
 
   try {
-    // Para carregar um post, precisamos saber o nome completo do arquivo.
-    // Como não temos essa informação aqui, vamos buscar o índice novamente.
-    const indexResponse = await fetch(POSTS_INDEX_URL);
-    const indexData = await indexResponse.json();
-    const postFilename = (indexData.post_files || []).find(
-      (file) => getSlugFromFilename(file) === postSlug
+    // Busca o post específico pelo seu slug.
+    const response = await fetch(
+      `${WP_API_BASE_URL}/posts?slug=${postSlug}&_embed`
     );
+    if (!response.ok) {
+      throw new Error("Não foi possível carregar o post.");
+    }
+    const posts = await response.json();
 
-    if (!postFilename) {
+    if (!posts || posts.length === 0) {
       throw new Error("Post não encontrado.");
     }
 
-    const postResponse = await fetch(`${POSTS_DIR}${postFilename}`);
-    const post = await postResponse.json();
+    const post = posts[0];
 
-    document.title = `${post.title} - Dr. Gabriel Marcondes`;
+    // Pega o autor e o resumo (excerpt) do post
+    const authorName =
+      post._embedded?.author?.[0]?.name || "Dr. Gabriel Marcondes";
+    const summary = post.excerpt.rendered.replace(/<[^>]*>?/gm, ""); // Remove tags HTML do resumo
+
+    // Atualiza o título da página e a meta description
+    document.title = `${post.title.rendered} - Dr. Gabriel Marcondes`;
     document
       .querySelector('meta[name="description"]')
-      .setAttribute("content", post.summary);
-    document.getElementById("post-title").textContent = post.title;
-    document.getElementById("post-meta").textContent = `Publicado por ${
-      post.author
-    } em ${formatDate(post.date)}`;
-    // O conteúdo já vem em HTML do editor Rich Text
-    postContent.innerHTML = post.body;
+      .setAttribute("content", summary);
+
+    // Atualiza os elementos na página com o conteúdo do post
+    const postTitleEl = document.getElementById("post-title");
+    if (postTitleEl) postTitleEl.innerHTML = post.title.rendered;
+
+    const postMetaEl = document.getElementById("post-meta");
+    if (postMetaEl)
+      postMetaEl.textContent = `Publicado por ${authorName} em ${formatDate(
+        post.date
+      )}`;
+
+    // O conteúdo do post já vem em HTML do WordPress
+    postContent.innerHTML = post.content.rendered;
   } catch (error) {
     postContent.innerHTML = `<p>Ocorreu um erro ao carregar o post. Tente novamente mais tarde.</p>`;
     console.error(error);
   }
 }
 
+// Executa as funções quando o DOM estiver pronto
 document.addEventListener("DOMContentLoaded", () => {
-  loadBlogPosts();
-  loadSinglePost();
+  // Verifica em qual página estamos para chamar a função correta
+  if (document.getElementById("blog-posts-container")) {
+    loadBlogPosts();
+  }
+  if (document.getElementById("post-content")) {
+    loadSinglePost();
+  }
 });

@@ -21,6 +21,11 @@
     <!-- CSS -->
     <link rel="stylesheet" href="style.css?v=1.2" />
 
+    <!-- Swiper.js CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
     <!-- Web Components -->
     <script src="components.js?v=1.8" defer></script>
   </head>
@@ -82,68 +87,107 @@
       <section id="especialidades" class="section specialties">
         <div class="container">
           <h2 class="section-title">Especialidades</h2>
-          <div class="cards">
-            <a href="endometriose.html" class="card-link">
-              <div class="card">
-                <div class="card-media img-endometriose"></div>
-                <div class="card-body">
-                  <h3>Endometriose</h3>
-                  <p>
-                    Diagnóstico e tratamento completos, com abordagens clínicas
-                    e cirúrgicas para alívio da dor e melhoria da qualidade de
-                    vida.
-                  </p>
+
+          <div class="carousel-container">
+            <!-- Slider main container -->
+            <div class="swiper specialties-carousel">
+              <!-- Additional required wrapper -->
+              <div class="swiper-wrapper">
+                <!-- Slides -->
+                <div class="swiper-slide">
+                  <a href="pre-natal.html" class="card-link">
+                    <div class="card">
+                      <div class="card-media img-prenatal"></div>
+                      <div class="card-body">
+                        <h3>Pré-Natal</h3>
+                        <p>
+                          Acompanhamento completo para uma gestação segura e
+                          tranquila, com foco na saúde da mãe e do bebê.
+                        </p>
+                      </div>
+                    </div>
+                  </a>
                 </div>
-              </div>
-            </a>
-            <a href="menopausa.html" class="card-link">
-              <div class="card">
-                <div class="card-media img-menopausa"></div>
-                <div class="card-body">
-                  <h3>Menopausa</h3>
-                  <p>
-                    Acompanhamento e terapia de reposição hormonal para uma
-                    transição com mais saúde e bem-estar.
-                  </p>
+                <div class="swiper-slide">
+                  <a href="parto-humanizado.html" class="card-link">
+                    <div class="card">
+                      <div class="card-media img-parto"></div>
+                      <div class="card-body">
+                        <h3>Parto Humanizado</h3>
+                        <p>
+                          Assistência que respeita o protagonismo da mulher,
+                          suas escolhas e o tempo do bebê.
+                        </p>
+                      </div>
+                    </div>
+                  </a>
                 </div>
-              </div>
-            </a>
-            <a href="cirurgia-ginecologica.html" class="card-link">
-              <div class="card">
-                <div class="card-media img-cirurgia"></div>
-                <div class="card-body">
-                  <h3>Cirurgia Ginecológica</h3>
-                  <p>
-                    Procedimentos minimamente invasivos (laparoscopia e
-                    histeroscopia) para uma recuperação mais rápida.
-                  </p>
+                <div class="swiper-slide">
+                  <a href="endometriose.html" class="card-link">
+                    <div class="card">
+                      <div class="card-media img-endometriose"></div>
+                      <div class="card-body">
+                        <h3>Endometriose</h3>
+                        <p>
+                          Diagnóstico e tratamento completos, com abordagens
+                          clínicas e cirúrgicas para alívio da dor.
+                        </p>
+                      </div>
+                    </div>
+                  </a>
                 </div>
-              </div>
-            </a>
-            <a href="exames-preventivos.html" class="card-link">
-              <div class="card">
-                <div class="card-media img-exames"></div>
-                <div class="card-body">
-                  <h3>Exames Preventivos</h3>
-                  <p>
-                    Realização de Papanicolau, ultrassonografia pélvica e outros
-                    exames essenciais para a saúde da mulher.
-                  </p>
+                <div class="swiper-slide">
+                  <a href="cirurgia-ginecologica.html" class="card-link">
+                    <div class="card">
+                      <div class="card-media img-cirurgia"></div>
+                      <div class="card-body">
+                        <h3>Cirurgia Ginecológica</h3>
+                        <p>
+                          Procedimentos minimamente invasivos para uma
+                          recuperação mais rápida e confortável.
+                        </p>
+                      </div>
+                    </div>
+                  </a>
                 </div>
-              </div>
-            </a>
-            <a href="planejamento-familiar.html" class="card-link">
-              <div class="card">
-                <div class="card-media img-planejamento"></div>
-                <div class="card-body">
-                  <h3>Planejamento Familiar</h3>
-                  <p>
-                    Orientação sobre métodos contraceptivos, incluindo DIU
-                    hormonal e não hormonal, e laqueadura.
-                  </p>
+                <div class="swiper-slide">
+                  <a href="menopausa.html" class="card-link">
+                    <div class="card">
+                      <div class="card-media img-menopausa"></div>
+                      <div class="card-body">
+                        <h3>Menopausa</h3>
+                        <p>
+                          Terapia hormonal e acompanhamento para uma transição
+                          com mais saúde e bem-estar.
+                        </p>
+                      </div>
+                    </div>
+                  </a>
                 </div>
+                <div class="swiper-slide">
+                  <a href="planejamento-familiar.html" class="card-link">
+                    <div class="card">
+                      <div class="card-media img-planejamento"></div>
+                      <div class="card-body">
+                        <h3>Planejamento Familiar</h3>
+                        <p>
+                          Orientação sobre métodos contraceptivos, incluindo DIU
+                          e laqueadura, para uma escolha segura.
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <!-- Adicione mais slides conforme necessário -->
               </div>
-            </a>
+            </div>
+
+            <!-- If we need navigation buttons -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+
+            <!-- If we need pagination -->
+            <div class="swiper-pagination"></div>
           </div>
         </div>
       </section>
@@ -152,6 +196,9 @@
     <custom-footer></custom-footer>
 
     <cookie-modal></cookie-modal>
+
+    <!-- Swiper.js JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script src="cookie-modal.js" defer></script>
     <script src="script.js?v=1.4" defer></script>

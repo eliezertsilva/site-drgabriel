@@ -79,7 +79,7 @@ main {
       rgba(38, 48, 30, 0.6),
       rgba(38, 48, 30, 0.6)
     ),
-    url("./assets/dr-gabriel.jpg");
+    url("../images/dr-gabriel.jpg");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -193,7 +193,7 @@ main {
 }
 .photo.doctor {
   background: linear-gradient(135deg, #fff, var(--primary-50)),
-    url("assets/dr_gabriel_bco(1).png") center/cover no-repeat;
+    url("../images/dr_gabriel_bco(1).png") center/cover no-repeat;
 }
 .caption {
   color: var(--muted);
@@ -542,6 +542,31 @@ main {
   color: #fff;
 }
 
+/* Página de Erro 404 */
+.error-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 24px;
+  min-height: calc(
+    100vh - 78px - 300px
+  ); /* Altura da tela - header - footer (aprox) */
+}
+.error-code {
+  font-size: 8rem;
+  font-weight: 700;
+  color: var(--primary-100);
+  line-height: 1;
+}
+.error-page-container h1 {
+  font-size: 2.5rem;
+}
+.error-page-container .btn {
+  margin-top: 24px;
+}
+
 /* --- Media Queries --- */
 
 /* Tablet e telas menores (abaixo de 1080px) */
@@ -558,19 +583,21 @@ main {
     height: 580px;
     background-position: top right;
   }
+  .hero .container {
+    height: 100%;
+  }
   .hero-content {
     position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
+    padding-bottom: 20px;
   }
   .cta-group-hero {
     /* Remove posicionamento absoluto e usa margens para empurrar para baixo */
     margin-top: auto;
-    margin-bottom: 20px;
     flex-direction: row;
-    align-items: center;
-    justify-content: center; /* Centraliza os botões para evitar corte */
+    justify-content: center;
     gap: 12px;
     width: 100%;
     left: 0; /* Garante que ocupe a largura toda */

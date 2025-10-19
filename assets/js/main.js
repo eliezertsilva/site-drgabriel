@@ -1,8 +1,10 @@
+// Define o componente <custom-header> para o cabeçalho do site.
 class CustomHeader extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
 
+    // Detecta se está em uma subpágina para ajustar os caminhos dos links e imagens.
     const pathParts = window.location.pathname.split("/");
     const isSubPage = pathParts.includes("especialidades");
     const basePath = isSubPage ? "../" : "./";
@@ -10,20 +12,21 @@ class CustomHeader extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>
         :host {
+          /* Estilos para o próprio componente <custom-header> */
           --primary: #556b2f;
           --text-white: #ffffff;
           --text-dark: #26301e;
           display: block;
         }
         
-        .site-header {
+        .site-header { /* Container principal do cabeçalho */
           background: var(--primary);
-          position: sticky;
+          position: sticky; /* Fica fixo no topo ao rolar */
           top: 0;
           z-index: 50;
         }
 
-        .header-content {
+        .header-content { /* Alinha o conteúdo do cabeçalho */
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -37,12 +40,24 @@ class CustomHeader extends HTMLElement {
         .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
         .logo-img { width: 160px; height: auto; display: block; }
         
-        .menu-toggle, .mobile-nav-container { display: none; }
+        .menu-toggle, .mobile-nav-container { display: none; } /* Esconde elementos mobile no desktop */
 
         ul.menu { list-style: none; display: flex; gap: 18px; align-items: center; margin: 0; padding: 0; }
         li { position: relative; }
-        a { text-decoration: none; color: var(--text-white); font-weight: 500; padding: 8px 4px; display: flex; align-items: center; gap: 4px; transition: opacity 0.2s; }
-        a:hover { opacity: 0.8; }
+        a { text-decoration: none; color: var(--text-white); font-weight: 500; padding: 8px 4px; display: flex; align-items: center; gap: 4px; }
+        
+        /* Efeito de hover para os links do menu principal */
+        ul.menu > li > a {
+          position: relative;
+          overflow: hidden;
+        }
+        ul.menu > li > a::after { /* Cria a barrinha animada */
+          content: ''; position: absolute; bottom: 0; left: 0;
+          width: 0; height: 2px; background-color: var(--text-white);
+          transition: width 0.3s ease-out; /* Animação do crescimento */
+        }
+        ul.menu > li > a:hover::after { width: 100%; } /* Expande a barra no hover */
+
         .submenu-toggle-icon { width: 16px; height: 16px; transition: transform 0.2s; }
         
         .submenu {
@@ -54,6 +69,7 @@ class CustomHeader extends HTMLElement {
         .submenu a:hover { background: #f3f4f6; opacity: 1; }
 
         @media (min-width: 1081px) {
+            /* Exibe o submenu no desktop ao passar o mouse ou focar */
             .has-submenu:hover > .submenu,
             .has-submenu:focus-within > .submenu {
                 display: block;
@@ -71,6 +87,7 @@ class CustomHeader extends HTMLElement {
         body.menu-open { overflow: hidden; }
 
         @media (max-width: 1080px) {
+            /* Estilos para o menu mobile */
             .header-content {
                 height: 70px; /* Altura ajustada para mobile */
                 padding: 10px 16px;
@@ -80,7 +97,7 @@ class CustomHeader extends HTMLElement {
 
             .logo-img { width: 140px; }
 
-            .menu-toggle {
+            .menu-toggle { /* Botão "hambúrguer" */
                 display: grid; /* Usado para centralizar o ícone interno */
                 place-items: center;
                 background: none; border: none;
@@ -94,7 +111,7 @@ class CustomHeader extends HTMLElement {
                 width: 48px; height: 48px;
             }
 
-            .nav-icon {
+            .nav-icon { /* Ícone do menu hambúrguer (as 3 barrinhas) */
                 width: 24px; height: 20px;
                 position: relative;
             }
@@ -109,12 +126,13 @@ class CustomHeader extends HTMLElement {
             .nav-icon span:nth-child(2) { top: 8px; }
             .nav-icon span:nth-child(3) { bottom: 0; }
 
+            /* Animação do ícone para "X" quando o menu está ativo */
             .menu-toggle.is-active .nav-icon span { background-color: var(--text-dark); }
             .menu-toggle.is-active .nav-icon span:nth-child(1) { transform: rotate(45deg); top: 8px; }
             .menu-toggle.is-active .nav-icon span:nth-child(2) { opacity: 0; }
             .menu-toggle.is-active .nav-icon span:nth-child(3) { transform: rotate(-45deg); top: 8px; }
 
-            .menu-overlay {
+            .menu-overlay { /* Fundo escurecido atrás do menu mobile */
                 display: none; position: fixed; inset: 0;
                 background: rgba(0,0,0,0.5); z-index: 999;
             }
@@ -274,6 +292,7 @@ class CustomHeader extends HTMLElement {
     const menuOverlay = this.shadowRoot.querySelector(".menu-overlay");
 
     const openMenu = () => {
+      // Adiciona classes para mostrar o menu e travar o scroll da página.
       menuToggle.classList.add("is-active");
       menuToggle.setAttribute("aria-expanded", "true");
       mobileMenu.classList.add("is-active");
@@ -282,6 +301,7 @@ class CustomHeader extends HTMLElement {
     };
 
     const closeMenu = () => {
+      // Remove as classes para esconder o menu.
       menuToggle.classList.remove("is-active");
       menuToggle.setAttribute("aria-expanded", "false");
       mobileMenu.classList.remove("is-active");
@@ -296,6 +316,7 @@ class CustomHeader extends HTMLElement {
         });
     };
 
+    // Alterna entre abrir e fechar o menu ao clicar no botão.
     menuToggle.addEventListener("click", () => {
       if (mobileMenu.classList.contains("is-active")) {
         closeMenu();
@@ -304,14 +325,17 @@ class CustomHeader extends HTMLElement {
       }
     });
 
+    // Fecha o menu se o usuário clicar no fundo escurecido.
     menuOverlay.addEventListener("click", closeMenu);
 
+    // Gerencia cliques dentro do menu mobile.
     mobileMenu.addEventListener("click", (e) => {
       const target = e.target.closest("a");
       if (!target) return;
 
       const isSubmenuToggle = target.classList.contains("submenu-toggle");
 
+      // Se for um item com submenu, abre/fecha o submenu.
       if (isSubmenuToggle) {
         e.preventDefault();
         const submenu = target.nextElementSibling;
@@ -323,6 +347,7 @@ class CustomHeader extends HTMLElement {
       }
     });
 
+    // Fecha o menu mobile se a tela for redimensionada para desktop.
     window.addEventListener("resize", () => {
       if (window.innerWidth > 1080) {
         closeMenu();
@@ -331,11 +356,13 @@ class CustomHeader extends HTMLElement {
   }
 }
 
+// Define o componente <custom-footer> para o rodapé do site.
 class CustomFooter extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
 
+    // Ajusta os caminhos dos links dependendo se está em uma subpágina.
     const pathParts = window.location.pathname.split("/");
     const isSubPage = pathParts.includes("especialidades");
     const basePath = isSubPage ? "../" : "./";
@@ -343,6 +370,7 @@ class CustomFooter extends HTMLElement {
     this.shadowRoot.innerHTML = `
             <style>
                 :host {
+                    /* Estilos para o próprio componente <custom-footer> */
                     --border: #e6eadf;
                     --text-soft: #4c5840;
                     --primary: #556b2f;
@@ -354,7 +382,7 @@ class CustomFooter extends HTMLElement {
                     margin-top: auto; /* Empurra o footer para o final */
                 }
                 .footer-grid {
-                    display: grid;
+                    display: grid; /* Layout principal do rodapé */
                     grid-template-columns: 1.2fr 1fr 1fr 1fr;
                     gap: 32px;
                     max-width: 1200px;
@@ -375,7 +403,7 @@ class CustomFooter extends HTMLElement {
                 }
                 .footer-nav a:hover, .legal a:hover { color: var(--primary); text-decoration: underline; }
                 
-                .legal { border-top: 1px solid var(--border); background: #fcfbfe;}
+                .legal { /* Barra inferior com informações legais */ border-top: 1px solid var(--border); background: #fcfbfe;}
                 .legal .container { padding: 16px 24px; color: var(--muted); font-size: 0.8rem; text-align: center; max-width: 100%; margin: 0 auto; }
                 
                 @media (max-width: 1080px) {
@@ -448,6 +476,7 @@ class CustomFooter extends HTMLElement {
   }
 
   connectedCallback() {
+    // Adiciona evento ao link "Preferências de Cookies" para abrir o modal.
     this.shadowRoot
       .getElementById("cookies-prefs-link")
       .addEventListener("click", (e) => {
@@ -460,6 +489,7 @@ class CustomFooter extends HTMLElement {
   }
 }
 
+// Registra os componentes customizados para que o navegador os reconheça.
 customElements.define("custom-header", CustomHeader);
 customElements.define("custom-footer", CustomFooter);
 
@@ -469,6 +499,7 @@ class CookieModal extends HTMLElement {
     this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = `
       <style>
+        /* O :host controla o próprio elemento <cookie-modal> */
         :host {
           --primary: #556b2f; /* Cor principal do site */
           --text-white: #ffffff;
@@ -483,11 +514,12 @@ class CookieModal extends HTMLElement {
           display: none; 
         }
 
+        /* Torna o modal visível quando a classe .is-visible é adicionada */
         :host(.is-visible) {
           display: block;
         }
 
-        .backdrop {
+        .backdrop { /* O container do banner de cookie */
           position: fixed;
           bottom: 0;
           left: 0;
@@ -496,7 +528,7 @@ class CookieModal extends HTMLElement {
           background: var(--primary);
           color: var(--text-white);
 
-          /* Animação */
+          /* Animação de entrada (desliza de baixo para cima) */
           transform: translateY(100%);
           transition: transform 0.3s ease-in-out;
         }
@@ -505,7 +537,7 @@ class CookieModal extends HTMLElement {
             transform: translateY(0);
         }
 
-        .modal-content {
+        .modal-content { /* Conteúdo interno do banner */
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -550,7 +582,7 @@ class CookieModal extends HTMLElement {
             opacity: 1;
         }
         
-        .btn-decline, .btn-accept {
+        .btn-decline, .btn-accept { /* Estilo base para os botões */
             font-family: var(--font-body);
             padding: 10px 20px;
             border-radius: 6px;
@@ -560,7 +592,7 @@ class CookieModal extends HTMLElement {
             transition: background-color 0.2s, color 0.2s, opacity 0.2s;
         }
 
-        .btn-decline {
+        .btn-decline { /* Botão de recusar */
             background-color: transparent;
             color: var(--text-white);
             border-color: var(--text-white);
@@ -569,7 +601,7 @@ class CookieModal extends HTMLElement {
             background-color: rgba(255,255,255,0.1);
         }
 
-        .btn-accept {
+        .btn-accept { /* Botão de aceitar */
              background-color: var(--text-white);
              color: var(--primary);
              border-color: var(--text-white);
@@ -578,6 +610,7 @@ class CookieModal extends HTMLElement {
             opacity: 0.9;
         }
 
+        /* Ajustes para telas menores */
         @media (max-width: 768px) {
             .modal-content {
                 flex-direction: column;
@@ -608,6 +641,7 @@ class CookieModal extends HTMLElement {
   }
 
   connectedCallback() {
+    // Adiciona eventos de clique aos botões de aceitar e recusar.
     this.shadowRoot
       .getElementById("accept")
       .addEventListener("click", () => this.handleChoice("accepted"));
@@ -617,6 +651,7 @@ class CookieModal extends HTMLElement {
   }
 
   handleChoice(choice) {
+    // Dispara um evento customizado com a escolha do usuário e esconde o modal.
     this.dispatchEvent(new CustomEvent("cookie-choice", { detail: choice }));
     this.hide();
   }
@@ -630,6 +665,7 @@ class CookieModal extends HTMLElement {
   }
 }
 
+// Registra o componente <cookie-modal>.
 customElements.define("cookie-modal", CookieModal);
 
 function setupCookieModal() {
@@ -637,6 +673,7 @@ function setupCookieModal() {
   if (!cookieModal) return;
 
   const loadAnalytics = () => {
+    // Função placeholder para carregar scripts de análise (Google Analytics, etc.).
     console.log("Cookies aceitos. Carregando scripts de análise...");
     // Scripts de análise seriam adicionados aqui.
   };
@@ -670,6 +707,7 @@ function setupCookieModal() {
   showModalOnFirstVisit();
 }
 
+// Configura a funcionalidade de "acordeão" para a seção de FAQ.
 function setupFaqAccordion() {
   const faqItems = document.querySelectorAll(".faq-item");
   if (faqItems.length === 0) return;
@@ -679,6 +717,7 @@ function setupFaqAccordion() {
     const answer = item.querySelector(".faq-answer");
     const answerContent = answer.firstElementChild;
 
+    // Alterna a visibilidade da resposta ao clicar na pergunta.
     question.addEventListener("click", () => {
       const isOpen = question.getAttribute("aria-expanded") === "true";
 
@@ -688,6 +727,7 @@ function setupFaqAccordion() {
   });
 }
 
+// Configura o carrossel de especialidades usando a biblioteca Swiper.js.
 function setupSpecialtiesCarousel() {
   // Verifica se a classe Swiper está disponível
   if (typeof Swiper === "undefined") return;
@@ -730,6 +770,7 @@ function setupSpecialtiesCarousel() {
   });
 }
 
+// Executa as funções de setup quando o DOM (a página) estiver totalmente carregado.
 document.addEventListener("DOMContentLoaded", () => {
   // Garante que o setup só rode depois que o componente <cookie-modal> for definido
   customElements.whenDefined("cookie-modal").then(setupCookieModal);

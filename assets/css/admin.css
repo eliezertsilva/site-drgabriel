@@ -1,0 +1,394 @@
+/* === Estilos para Páginas de Admin e Login === */
+
+.login-container,
+.admin-container {
+  max-width: 1200px;
+  margin: 4rem auto;
+  padding: 2rem;
+  background: #f9fafb;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+.login-container {
+  max-width: 450px;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.admin-header h1,
+.admin-main-content h2,
+.admin-main-content h3 {
+  color: var(--text);
+}
+
+.panel-header h2 {
+  border-bottom: 1px solid var(--border);
+  font-size: 1.5rem;
+  padding-bottom: 8px;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-soft);
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="date"],
+.form-group input[type="file"],
+.form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: #fff;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.form-group textarea {
+  min-height: 150px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.form-actions {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+  flex-direction: column;
+  border-top: none;
+}
+
+/* === Botões do Admin (unificados com style.css) === */
+.btn-secondary {
+  background-color: transparent;
+  border-color: var(--border);
+  color: var(--text-soft);
+}
+.btn-secondary:hover {
+  background-color: var(--primary-50);
+  border-color: var(--primary-100);
+  color: var(--primary);
+}
+
+.btn-danger {
+  background-color: #d9534f;
+  color: white;
+  border-color: transparent;
+}
+
+.btn-danger:hover {
+  background-color: #c9302c;
+}
+
+.btn-outline {
+  border-color: var(--primary);
+  color: var(--primary);
+  background-color: transparent;
+}
+
+/* === Novo Layout do Painel Admin === */
+.admin-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 2rem;
+}
+
+/* Modo de edição focado (estilo WordPress) */
+.admin-layout.editor-mode {
+  grid-template-columns: 1fr; /* O conteúdo principal ocupa todo o espaço */
+}
+
+.admin-layout.editor-mode .admin-sidebar {
+  display: none; /* Esconde o menu lateral */
+}
+
+/* Estilos para o modo de edição focado (header/footer) */
+.editor-header,
+.editor-footer {
+  display: none; /* Escondido por padrão */
+  position: fixed;
+  left: 0;
+  right: 0;
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  padding: 10px 24px;
+}
+
+.editor-header {
+  top: 0;
+  background-color: var(--primary);
+  border-bottom-color: transparent;
+}
+
+.editor-header img {
+  max-height: 80px;
+}
+
+.editor-footer {
+  background-color: #fff;
+  bottom: 0;
+  border-top: 1px solid var(--border);
+  border-bottom: none;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+body.full-editor-mode custom-header,
+body.full-editor-mode custom-footer {
+  display: none;
+}
+
+body.full-editor-mode .editor-header,
+body.full-editor-mode .editor-footer {
+  display: flex;
+}
+
+/* Adiciona espaçamento para o conteúdo não ficar sob o header/footer fixos */
+body.full-editor-mode .page-content {
+  padding-top: 120px; /* Altura do header (100px) + 20px de margem */
+  padding-bottom: 60px; /* Altura do footer (40px) + 20px de margem */
+}
+
+.editor-footer span {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+}
+
+.editor-footer .eme-logo {
+  height: 20px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  vertical-align: middle; /* Alinha a logo verticalmente com o texto */
+}
+.editor-footer a:hover .eme-logo {
+  opacity: 1;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* === Layout do Editor de Post === */
+.editor-grid-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 2rem;
+}
+
+.editor-title-input {
+  font-size: 2rem;
+  font-weight: 600;
+  border: none;
+  padding: 1rem 0;
+  background: transparent;
+}
+.editor-title-input:focus {
+  border: none;
+  box-shadow: none;
+}
+
+.editor-sidebar-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sidebar-panel {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.sidebar-panel-title {
+  font-size: 1rem;
+  padding: 12px 16px;
+  margin: 0;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-panel-content {
+  padding: 16px;
+}
+
+.admin-sidebar {
+  background-color: var(--surface);
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  align-self: start; /* Faz a sidebar não esticar */
+}
+
+.admin-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tab-link {
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  background-color: transparent;
+  border-radius: 8px;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.tab-link:hover {
+  background-color: var(--primary-50);
+  color: var(--primary);
+}
+
+.tab-link.active {
+  background-color: var(--primary);
+  color: #fff;
+}
+
+.admin-main-content {
+  background-color: var(--surface);
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.error-message {
+  color: #d9534f; /* Tom de vermelho */
+  background-color: #f2dede;
+  border: 1px solid #ebccd1;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  display: none; /* Oculto por padrão */
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* === Estilos da Lista de Posts e Usuários === */
+
+.post-list {
+  margin-bottom: 2rem;
+}
+
+.post-item,
+.user-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.2s ease;
+}
+
+.post-item:hover,
+.user-item:hover {
+  background-color: var(--primary-50);
+}
+
+.post-item-title {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.post-actions button,
+.user-actions button {
+  margin-left: 0.5rem;
+}
+
+/* === Botões Específicos do Admin === */
+
+#logout-btn {
+  background: var(--muted);
+}
+
+#logout-btn:hover {
+  background: var(--text-soft);
+}
+
+/* === Toast / Snackbar Notifications === */
+.toast-container {
+  position: fixed;
+  top: 90px; /* Abaixo do header */
+  right: 20px;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: translateX(110%);
+  transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  min-width: 280px;
+  max-width: 350px;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.toast.success {
+  background-color: var(--primary);
+  color: #fff;
+}
+.toast.error {
+  background-color: #d9534f;
+  color: #fff;
+}

@@ -1,6 +1,5 @@
-// URL da sua API REST do WordPress local.
-// Corresponde à pasta da sua instalação do WordPress no XAMPP.
-const WP_API_BASE_URL = "http://localhost/drgabriel/wp-json/wp/v2";
+// Define a URL base para a nossa API local.
+const API_BASE_URL = "/api/posts";
 
 /**
  * Formata uma data no formato 'YYYY-MM-DD' para 'DD de Mês de YYYY'.
@@ -9,7 +8,6 @@ const WP_API_BASE_URL = "http://localhost/drgabriel/wp-json/wp/v2";
  */
 function formatDate(dateString) {
   const date = new Date(dateString);
-  // Define o fuso horário para evitar problemas de data "um dia antes".
   const options = {
     year: "numeric",
     month: "long",
@@ -20,61 +18,57 @@ function formatDate(dateString) {
 }
 
 /**
- * Busca posts na API do WordPress.
- * @param {string} [searchTerm=''] - Termo opcional para busca.
+ * Busca posts na API local.
  * @returns {Promise<Array>} Uma promessa que resolve para um array de posts.
  */
-async function fetchPosts(searchTerm = "") {
-  // Adiciona o parâmetro de busca se um termo for fornecido.
-  const searchParam = searchTerm
-    ? `&search=${encodeURIComponent(searchTerm)}`
-    : "";
-  const url = `${WP_API_BASE_URL}/posts?_embed&status=publish${searchParam}`;
-
+async function fetchPosts() {
   try {
-    const response = await fetch(url);
-    // Se a resposta da rede não for bem-sucedida, lança um erro.
+    const response = await fetch(API_BASE_URL);
     if (!response.ok) {
-      throw new Error("Não foi possível carregar os posts do WordPress.");
+      throw new Error(`Erro na rede: ${response.statusText}`);
     }
-    const posts = await response.json();
-
-    return posts;
+    return await response.json();
   } catch (error) {
-    // Em caso de erro na rede ou na conversão, exibe no console e retorna uma lista vazia.
-    console.error(error);
-    return []; // Retorna array vazio em caso de erro
+    console.error("Falha ao buscar posts:", error);
+    return [];
   }
 }
 
 /**
- * Renderiza uma lista de posts em um container.
+ * Renderiza uma lista de posts em um container HTML.
  * @param {Array} posts - Array de posts a serem renderizados.
  * @param {HTMLElement} container - O elemento container onde os posts serão inseridos.
  */
 function renderPosts(posts, container) {
   if (!container) return;
 
-  // Se não houver posts, exibe uma mensagem.
   if (posts.length === 0) {
-    container.innerHTML = "<p>Nenhum post encontrado para esta busca.</p>";
+    container.innerHTML = "<p>Nenhum post encontrado.</p>";
     return;
   }
 
   container.innerHTML = posts
-    // Mapeia cada objeto de post para um card HTML.
     .map((post) => {
-      const imageUrl =
-        post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
-        "assets/images/placeholder-blog.jpg"; // Caminho corrigido
-      // Remove tags HTML do resumo para uma exibição mais limpa e segura.
-      const summary = post.excerpt.rendered.replace(/<[^>]*>?/gm, "");
+      const imageUrl = post.imageUrl || "assets/images/placeholder-blog.jpg";
+      const summary =
+        post.summary ||
+        post.content.substring(0, 100).replace(/<[^>]*>?/gm, "") + "...";
+
+      const tagsHtml =
+        post.tags && post.tags.length > 0
+          ? `<div class="tags-container">
+              ${post.tags
+                .map((tag) => `<span class="tag">${tag}</span>`)
+                .join("")}
+           </div>`
+          : "";
 
       return `
         <a href="post.html?slug=${post.slug}" class="post-card">
             <div class="post-card-image" style="background-image: url('${imageUrl}')"></div>
             <div class="post-card-body">
-                <h3>${post.title.rendered}</h3>
+                ${tagsHtml}
+                <h3>${post.title}</h3>
                 <div>${summary}</div>
             </div>
         </a>
@@ -83,78 +77,241 @@ function renderPosts(posts, container) {
     .join("");
 }
 
+let allPostsCache = [];
+let currentPage = 1;
+const postsPerPage = 6; // Defina quantos posts por página
+
 /**
- * Carrega e exibe a lista de posts na página do blog, com destaque.
+ * Exibe uma página específica de posts.
+ * @param {number} page - O número da página a ser exibida.
+ * @param {Array} posts - O array completo de posts.
+ */
+function displayPage(page, posts) {
+  currentPage = page;
+  const container = document.getElementById("blog-posts-container");
+  if (!container) return;
+
+  const start = (page - 1) * postsPerPage;
+  const end = start + postsPerPage;
+  const paginatedPosts = posts.slice(start, end);
+
+  renderPosts(paginatedPosts, container);
+  setupPagination(posts);
+  window.scrollTo({ top: container.offsetTop - 100, behavior: "smooth" });
+}
+
+/**
+ * Configura e renderiza os controles de paginação.
+ * @param {Array} posts - O array completo de posts para calcular o total de páginas.
+ */
+function setupPagination(posts) {
+  const paginationContainer = document.getElementById("pagination-container");
+  if (!paginationContainer) return;
+
+  const pageCount = Math.ceil(posts.length / postsPerPage);
+  paginationContainer.innerHTML = "";
+
+  if (pageCount <= 1) return; // Não mostra paginação se houver apenas 1 página
+
+  // Botão "Anterior"
+  const prevButton = document.createElement("button");
+  prevButton.innerHTML = "&laquo; Anterior";
+  prevButton.className = "pagination-btn";
+  if (currentPage === 1) prevButton.classList.add("disabled");
+  prevButton.addEventListener("click", () => {
+    if (currentPage > 1) {
+      displayPage(currentPage - 1, posts);
+    }
+  });
+  paginationContainer.appendChild(prevButton);
+
+  // Números das páginas
+  for (let i = 1; i <= pageCount; i++) {
+    const pageNumberButton = document.createElement("button");
+    pageNumberButton.textContent = i;
+    pageNumberButton.className = "page-number";
+    if (i === currentPage) pageNumberButton.classList.add("active");
+    pageNumberButton.addEventListener("click", () => displayPage(i, posts));
+    paginationContainer.appendChild(pageNumberButton);
+  }
+
+  // Botão "Próximo"
+  const nextButton = document.createElement("button");
+  nextButton.innerHTML = "Próximo &raquo;";
+  nextButton.className = "pagination-btn";
+  if (currentPage === pageCount) nextButton.classList.add("disabled");
+  nextButton.addEventListener("click", () => {
+    if (currentPage < pageCount) {
+      displayPage(currentPage + 1, posts);
+    }
+  });
+  paginationContainer.appendChild(nextButton);
+}
+
+/**
+ * Carrega e exibe os posts na página principal do blog.
  */
 async function loadBlogPage() {
   const featuredContainer = document.getElementById("featured-post-container");
   const postsContainer = document.getElementById("blog-posts-container");
   if (!postsContainer || !featuredContainer) return;
 
-  // Exibe mensagens de carregamento enquanto os dados são buscados.
   featuredContainer.innerHTML = "<p>Carregando destaque...</p>";
   postsContainer.innerHTML = "<p>Carregando posts...</p>";
 
-  const allPosts = await fetchPosts();
+  allPostsCache = await fetchPosts();
+  const allPosts = allPostsCache;
 
   if (allPosts.length > 0) {
-    // Post em destaque (o primeiro da lista)
-    const featuredPost = allPosts[0]; // Pega o post mais recente como destaque.
+    const featuredPost = allPosts[0];
     const featuredImageUrl =
-      featuredPost._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
-      "assets/images/placeholder-blog.jpg"; // Caminho corrigido
-    // Limpa o resumo do post em destaque para evitar erros e garantir consistência.
-    const featuredSummary = featuredPost.excerpt.rendered.replace(
-      /<[^>]*>?/gm,
-      ""
-    );
+      featuredPost.imageUrl || "assets/images/placeholder-blog.jpg";
+    const featuredSummary =
+      featuredPost.summary ||
+      featuredPost.content.substring(0, 150).replace(/<[^>]*>?/gm, "") + "...";
 
     featuredContainer.innerHTML = `
       <a href="post.html?slug=${featuredPost.slug}" class="featured-post">
         <div class="featured-post-image" style="background-image: url('${featuredImageUrl}')"></div>
         <div class="featured-post-body">
-          <h2>${featuredPost.title.rendered}</h2>
+          <h2>${featuredPost.title}</h2>
           <div>${featuredSummary}</div>
         </div>
       </a>
     `;
 
-    // Renderiza os posts restantes (todos, exceto o primeiro).
     const otherPosts = allPosts.slice(1);
-    renderPosts(otherPosts, postsContainer);
+    displayPage(1, otherPosts); // Exibe a primeira página dos outros posts
   } else {
-    // Se nenhum post for retornado pela API.
     featuredContainer.innerHTML = "";
-    postsContainer.innerHTML = "<p>Nenhum post encontrado.</p>";
+    postsContainer.innerHTML = "<p>Nenhum post foi encontrado.</p>";
   }
 
-  // Configura o formulário de busca para filtrar os posts.
   const searchForm = document.getElementById("blog-search-form");
   searchForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const searchTerm = document.getElementById("blog-search-input").value;
-    featuredContainer.style.display = "none"; // Esconde o destaque ao buscar
+    const searchTerm = document
+      .getElementById("blog-search-input")
+      .value.toLowerCase();
+    featuredContainer.style.display = "none";
     postsContainer.innerHTML = `<p>Buscando por "${searchTerm}"...</p>`;
-    const searchResults = await fetchPosts(searchTerm);
-    renderPosts(searchResults, postsContainer);
+
+    const filteredPosts = allPostsCache.filter(
+      (post) =>
+        post.title.toLowerCase().includes(searchTerm) ||
+        post.content.toLowerCase().includes(searchTerm) ||
+        (post.tags &&
+          post.tags.some((tag) => tag.toLowerCase().includes(searchTerm)))
+    );
+
+    displayPage(1, filteredPosts); // Exibe a primeira página dos resultados da busca
   });
+}
+
+/**
+ * Renderiza o conteúdo de um post na página.
+ * @param {object} post - O objeto do post com title, content, author, etc.
+ */
+function renderPostContent(post) {
+  const authorName = post.author || "Dr. Gabriel Marcondes";
+  const summary =
+    post.summary ||
+    (post.content
+      ? post.content.substring(0, 160).replace(/<[^>]*>?/gm, "")
+      : "");
+
+  document.title = `${post.title} - Dr. Gabriel Marcondes`;
+  const metaDescription = document.querySelector('meta[name="description"]');
+  if (metaDescription) {
+    metaDescription.setAttribute("content", summary);
+  }
+
+  const postTitleEl = document.getElementById("post-title");
+  if (postTitleEl) postTitleEl.innerHTML = post.title;
+
+  const postMetaEl = document.getElementById("post-meta");
+  if (postMetaEl) {
+    postMetaEl.textContent = `Publicado por ${authorName} em ${formatDate(
+      post.date
+    )}`;
+  }
+
+  const postTagsContainer = document.getElementById("post-tags-container");
+  if (postTagsContainer) {
+    if (post.tags && post.tags.length > 0) {
+      postTagsContainer.innerHTML = post.tags
+        .map(
+          (tag) =>
+            `<a href="blog.html?tag=${encodeURIComponent(
+              tag
+            )}" class="tag">${tag}</a>`
+        )
+        .join("");
+    } else {
+      postTagsContainer.innerHTML = "";
+    }
+  }
+
+  const postContentEl = document.getElementById("post-content");
+  if (postContentEl) {
+    let contentHtml = "";
+    // Use post.imageUrl for preview, post.image for saved posts
+    const coverImage = post.imageUrl || post.image;
+    if (coverImage) {
+      contentHtml += `<img src="${post.imageUrl}" alt="${post.title}" class="post-cover-image">`;
+    }
+    contentHtml += post.content;
+    postContentEl.innerHTML = contentHtml;
+  }
 }
 
 /**
  * Carrega e exibe o conteúdo de um post individual.
  */
 async function loadSinglePost() {
-  // Garante que o conteúdo seja exibido apenas quando o post for encontrado.
   const postContent = document.getElementById("post-content");
   if (!postContent) return;
 
-  // Pega o "slug" (identificador do post) da URL da página.
   const params = new URLSearchParams(window.location.search);
   const postSlug = params.get("slug");
+  const tagFilter = params.get("tag");
+  const isPreview = params.get("preview") === "true";
 
-  // Se não houver slug na URL, exibe uma mensagem de erro.
+  if (isPreview) {
+    const previewData = sessionStorage.getItem("postPreviewData");
+    if (previewData) {
+      const post = JSON.parse(previewData);
+      document.title = `[PREVIEW] ${post.title} - Dr. Gabriel Marcondes`;
+      renderPostContent(post);
+    } else {
+      postContent.innerHTML =
+        "<p>Nenhum dado de preview encontrado. Volte e tente novamente.</p>";
+    }
+    return;
+  }
+
+  // This logic is for blog.html, but we centralize it here
+  if (tagFilter) {
+    const postsContainer = document.getElementById("blog-posts-container");
+    const featuredContainer = document.getElementById(
+      "featured-post-container"
+    );
+    if (postsContainer) {
+      document.title = `Posts sobre "${tagFilter}" - Dr. Gabriel Marcondes`;
+      if (featuredContainer) featuredContainer.style.display = "none";
+      postsContainer.innerHTML = `<p>Buscando posts com a tag "${tagFilter}"...</p>`;
+      const allPosts = await fetchPosts();
+      const filteredPosts = allPosts.filter(
+        (p) =>
+          p.tags &&
+          p.tags.map((t) => t.toLowerCase()).includes(tagFilter.toLowerCase())
+      );
+      renderPosts(filteredPosts, postsContainer);
+    }
+    return;
+  }
+
   if (!postSlug) {
-    // Se nenhum 'slug' for encontrado na URL, exibe uma mensagem de erro clara.
     document.title = "Post não encontrado - Dr. Gabriel Marcondes";
     postContent.innerHTML =
       '<p>Post não encontrado. <a href="blog.html">Voltar para o blog</a>.</p>';
@@ -162,57 +319,30 @@ async function loadSinglePost() {
   }
 
   try {
-    // Busca o post específico pelo seu slug.
-    const response = await fetch(
-      `${WP_API_BASE_URL}/posts?slug=${postSlug}&_embed`
-    );
-    if (!response.ok) {
-      throw new Error("Não foi possível carregar o post.");
-    }
-    const posts = await response.json();
+    const response = await fetch(`${API_BASE_URL}/${postSlug}`);
+    if (!response.ok) throw new Error("Não foi possível carregar o post.");
+    const post = await response.json();
 
-    if (!posts || posts.length === 0) {
-      throw new Error("Post não encontrado.");
-    }
+    if (!post) throw new Error("Post não encontrado.");
 
-    const post = posts[0];
-
-    // Extrai dados do post para usar na página.
-    const authorName =
-      post._embedded?.author?.[0]?.name || "Dr. Gabriel Marcondes";
-    const summary = post.excerpt.rendered.replace(/<[^>]*>?/gm, ""); // Remove tags HTML do resumo
-
-    // Atualiza o título da página e a meta description
-    document.title = `${post.title.rendered} - Dr. Gabriel Marcondes`;
-    document
-      .querySelector('meta[name="description"]')
-      .setAttribute("content", summary);
-
-    // Insere o título, metadados e conteúdo do post no HTML.
-    const postTitleEl = document.getElementById("post-title");
-    if (postTitleEl) postTitleEl.innerHTML = post.title.rendered;
-
-    const postMetaEl = document.getElementById("post-meta");
-    if (postMetaEl)
-      postMetaEl.textContent = `Publicado por ${authorName} em ${formatDate(
-        post.date
-      )}`;
-
-    // O conteúdo principal do post já vem formatado em HTML do WordPress.
-    postContent.innerHTML = post.content.rendered;
+    renderPostContent(post);
   } catch (error) {
+    console.error("Falha ao carregar o post:", error);
     postContent.innerHTML = `<p>Ocorreu um erro ao carregar o post. Tente novamente mais tarde.</p>`;
-    console.error(error);
   }
 }
 
-// Executa as funções quando o DOM estiver pronto
+// Executa a função correta dependendo da página atual.
 document.addEventListener("DOMContentLoaded", () => {
-  // Verifica em qual página estamos para chamar a função correta
   if (document.getElementById("post-content")) {
     loadSinglePost();
   } else if (document.getElementById("blog-posts-container")) {
-    // Garante que só rode na página principal do blog
-    loadBlogPage();
+    const params = new URLSearchParams(window.location.search);
+    const tagFilter = params.get("tag");
+    if (tagFilter) {
+      loadSinglePost(); // Re-route to the tag filtering logic inside loadSinglePost
+    } else {
+      loadBlogPage();
+    }
   }
 });

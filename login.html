@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Admin</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+    <main class="page-content">
+        <div class="container">
+            <div class="login-container">
+                <img src="assets/images/logo-black.svg" alt="Logo Dr. Gabriel Marcondes" style="display: block; margin: 0 auto 1.5rem auto; width: 150px;">
+                <h2>Login - Área Administrativa</h2>
+                <div id="error-message" class="error-message"></div>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username">Usuário</label>
+                        <input type="text" id="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Entrar</button>
+                </form>
+                <p style="text-align: center; margin-top: 1rem;">Acesso restrito.</p>
+            </div>
+        </div>
+    </main>
+    <script src="assets/js/main.js" defer></script>
+    <script src="assets/js/login.js" defer></script>
+</body>
+</html>

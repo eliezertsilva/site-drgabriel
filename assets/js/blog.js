@@ -255,11 +255,7 @@ function renderPostContent(post) {
   const postContentEl = document.getElementById("post-content");
   if (postContentEl) {
     let contentHtml = "";
-    // Use post.imageUrl for preview, post.image for saved posts
-    const coverImage = post.imageUrl || post.image;
-    if (coverImage) {
-      contentHtml += `<img src="${post.imageUrl}" alt="${post.title}" class="post-cover-image">`;
-    }
+    // The cover image should only appear on the blog listing page, not on the single post page.
     contentHtml += post.content;
     postContentEl.innerHTML = contentHtml;
   }

@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <span>${user.username}</span>
                     <div class="user-actions">
                     ${
-                      user.username !== "admin"
+                      user.username !== "Gabriel" // Agora esconde o botão para o usuário "Gabriel" (com G maiúsculo)
                         ? `<button class="btn btn-danger delete-user-btn" data-username="${user.username}" aria-label="Excluir usuário: ${user.username}">Excluir</button>`
                         : ""
                     }
@@ -170,8 +170,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (target.classList.contains("delete-post-btn")) {
+      const postItem = target.closest(".post-item");
+      const postTitle = postItem
+        ? postItem.querySelector(".post-item-title").textContent
+        : "este post"; // Obtém o título do post
       if (
-        confirm(`Tem certeza que deseja excluir o post com slug "${slug}"?`)
+        confirm(`Tem certeza que deseja excluir o post "${postTitle}"?`) // Usa o título na mensagem
       ) {
         try {
           const response = await fetchAuth(`${API_BASE_URL}/posts/${slug}`, {

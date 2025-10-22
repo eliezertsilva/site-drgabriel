@@ -19,40 +19,101 @@
     </header>
 
     <main class="page-content">
-      <div class="container admin-container">
-        <div class="admin-layout editor-mode">
-          <div class="admin-main-content">
-            <div id="edit-post-panel" class="tab-content active">
-              <section class="post-editor">
-                <div class="panel-header">
-                  <h2 id="editor-heading">Criar Novo Post</h2>
-                  <a href="admin.html" class="btn btn-outline">
-                    Voltar para a Lista
-                  </a>
+      <section class="post-editor">
+        <div class="panel-header">
+          <h2 id="editor-heading">Criar Novo Post</h2>
+          <a href="admin.html" class="btn btn-outline"> Voltar para a Lista </a>
+        </div>
+        <form id="post-form">
+          <div class="editor-grid-layout">
+            <!-- Coluna Principal: Título e Conteúdo -->
+            <div class="editor-main-column">
+              <div class="form-group">
+                <label for="post-title-input" class="sr-only">Título</label>
+                <input
+                  type="text"
+                  id="post-title-input"
+                  required
+                  placeholder="Digite o título aqui"
+                  class="editor-title-input"
+                />
+              </div>
+              <div class="form-group">
+                <label id="editor-label" class="sr-only">Conteúdo</label>
+                <div id="editor" aria-labelledby="editor-label"></div>
+              </div>
+            </div>
+
+            <!-- Barra Lateral: Configurações e Ações -->
+            <div class="editor-sidebar-column">
+              <div class="sidebar-panel">
+                <h3 class="sidebar-panel-title">Publicar</h3>
+                <div class="sidebar-panel-content form-actions">
+                  <button type="submit" class="btn btn-primary">
+                    Salvar Post
+                  </button>
+                  <button
+                    type="button"
+                    id="preview-btn"
+                    class="btn btn-secondary"
+                  >
+                    Preview
+                  </button>
+                  <button
+                    type="button"
+                    id="cancel-btn"
+                    class="btn btn-secondary"
+                  >
+                    Cancelar
+                  </button>
                 </div>
-                <form id="post-form">
+              </div>
+
+              <div class="sidebar-panel">
+                <h3 class="sidebar-panel-title">Imagem de Capa</h3>
+                <div class="sidebar-panel-content">
+                  <div class="form-group">
+                    <div class="image-upload-actions">
+                      <label for="post-image-input" class="btn btn-secondary"
+                        >Enviar Nova</label
+                      >
+                      <input
+                        type="file"
+                        id="post-image-input"
+                        accept="image/*"
+                        class="sr-only"
+                      />
+                      <button
+                        type="button"
+                        id="open-gallery-btn"
+                        class="btn btn-outline"
+                      >
+                        Ver Galeria
+                      </button>
+                    </div>
+                    <img
+                      id="image-preview"
+                      src=""
+                      alt="Pré-visualização da imagem"
+                      style="
+                        width: 100%;
+                        margin-top: 10px;
+                        display: none;
+                        border-radius: 8px;
+                      "
+                    />
+                    <input type="hidden" id="post-image-url-hidden" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="sidebar-panel">
+                <h3 class="sidebar-panel-title">Detalhes</h3>
+                <div class="sidebar-panel-content">
                   <input type="hidden" id="post-slug-hidden" />
                   <div class="form-group">
-                    <label for="post-title-input">Título</label>
-                    <input type="text" id="post-title-input" required />
-                  </div>
-                  <div class="form-group">
                     <label for="post-summary-input">Resumo</label>
-                    <textarea id="post-summary-input" rows="3"></textarea>
-                  </div>
-                  <div class="form-group">
-                    <label for="post-tags-input"
-                      >Tags (separadas por vírgula)</label
-                    >
-                    <input
-                      type="text"
-                      id="post-tags-input"
-                      placeholder="ex: endometriose, saúde, cirurgia"
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label id="editor-label">Conteúdo</label>
-                    <div id="editor" aria-labelledby="editor-label"></div>
+                    <textarea id="post-summary-input" rows="4"></textarea>
                   </div>
                   <div class="form-group">
                     <label for="post-author-input">Autor</label>
@@ -66,42 +127,28 @@
                     <label for="post-date-input">Data</label>
                     <input type="date" id="post-date-input" />
                   </div>
+                </div>
+              </div>
+
+              <div class="sidebar-panel">
+                <h3 class="sidebar-panel-title">Tags</h3>
+                <div class="sidebar-panel-content">
                   <div class="form-group">
-                    <label for="post-image-input">Foto de Capa</label>
-                    <input type="file" id="post-image-input" accept="image/*" />
-                    <img
-                      id="image-preview"
-                      src=""
-                      alt="Pré-visualização da imagem"
-                      style="max-width: 200px; margin-top: 10px; display: none"
+                    <label for="post-tags-input" class="sr-only"
+                      >Tags (separadas por vírgula)</label
+                    >
+                    <input
+                      type="text"
+                      id="post-tags-input"
+                      placeholder="endometriose, saúde..."
                     />
-                    <input type="hidden" id="post-image-url-hidden" />
                   </div>
-                  <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">
-                      Salvar Post
-                    </button>
-                    <button
-                      type="button"
-                      id="cancel-btn"
-                      class="btn btn-secondary"
-                    >
-                      Cancelar
-                    </button>
-                    <button
-                      type="button"
-                      id="preview-btn"
-                      class="btn btn-secondary"
-                    >
-                      Preview
-                    </button>
-                  </div>
-                </form>
-              </section>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </form>
+      </section>
     </main>
 
     <footer class="editor-footer">
@@ -119,6 +166,27 @@
         />
       </a>
     </footer>
+
+    <!-- Modal da Galeria de Mídia -->
+    <div id="media-gallery-modal" class="media-modal">
+      <div class="media-modal-content">
+        <div class="media-modal-header">
+          <h2>Galeria de Mídia</h2>
+          <button
+            id="close-gallery-btn"
+            class="close-btn"
+            aria-label="Fechar galeria"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="media-modal-body">
+          <div id="media-gallery-grid" class="media-grid">
+            <!-- Imagens da galeria serão carregadas aqui -->
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div
       id="toast-container"

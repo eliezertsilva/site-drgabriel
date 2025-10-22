@@ -170,10 +170,20 @@ body.full-editor-mode .editor-footer {
   display: flex;
 }
 
-/* Adiciona espaçamento para o conteúdo não ficar sob o header/footer fixos */
 body.full-editor-mode .page-content {
-  padding-top: 120px; /* Altura do header (100px) + 20px de margem */
-  padding-bottom: 60px; /* Altura do footer (40px) + 20px de margem */
+  /* Ocupa toda a altura entre o header e o footer */
+  min-height: calc(
+    100vh - 100px - 41px
+  ); /* 100px para o header, 41px para o footer (incluindo 1px de borda) */
+  padding-left: 2rem; /* Adiciona espaçamento lateral */
+  padding-right: 2rem; /* Adiciona espaçamento lateral */
+  padding-top: 1.5rem; /* Adiciona espaçamento interno no topo */
+  padding-bottom: 1.5rem; /* Adiciona espaçamento interno na base */
+  margin-top: 100px; /* Desloca o conteúdo para baixo do header fixo */
+  margin-bottom: 41px; /* Desloca o conteúdo para cima do footer fixo */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Adiciona rolagem vertical para todo o conteúdo do editor */
 }
 
 .editor-footer span {
@@ -204,11 +214,24 @@ body.full-editor-mode .page-content {
   border-width: 0;
 }
 
+.post-editor {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-editor form {
+  flex-grow: 1; /* Permite que o formulário ocupe o espaço restante */
+  /* overflow-y: auto; */ /* REMOVIDO: A rolagem será no page-content */
+}
+
 /* === Layout do Editor de Post === */
 .editor-grid-layout {
   display: grid;
   grid-template-columns: 1fr 320px;
   gap: 2rem;
+  /* flex-grow: 1; */
+  /* overflow: hidden; */ /* REMOVIDO para permitir rolagem */
 }
 
 .editor-title-input {
@@ -243,6 +266,92 @@ body.full-editor-mode .page-content {
 }
 .sidebar-panel-content {
   padding: 16px;
+}
+
+.image-upload-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* === Galeria de Mídia (Modal) === */
+.media-modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.media-modal.is-visible {
+  display: flex;
+}
+
+.media-modal-content {
+  background-color: #fff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 900px;
+  height: 90vh;
+  max-height: 700px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.media-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.media-modal-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--text-soft);
+}
+
+.media-modal-body {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.media-item {
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+.media-item:hover,
+.media-item:focus {
+  border-color: var(--primary);
+}
+.media-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .admin-sidebar {
